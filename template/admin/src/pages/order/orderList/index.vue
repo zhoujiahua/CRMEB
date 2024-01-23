@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import productListDetails from './orderListDetails';
+import productListDetails from './orderListDetails.vue';
 import { mapMutations } from 'vuex';
 export default {
   name: 'list',
@@ -93,15 +93,15 @@ export default {
 </script>
 <style scoped lang="stylus">
 .product_tabs ::v-deep .ivu-tabs-bar {
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
 }
 
 .product_tabs ::v-deep .ivu-page-header-content {
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
 }
 
 .product_tabs ::v-deep .ivu-page-header-breadcrumb {
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
 }
 
 ::v-deep .el-badge__content.is-fixed {

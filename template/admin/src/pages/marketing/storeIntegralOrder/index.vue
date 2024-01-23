@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import productlistDetails from './orderlistDetails';
+import productlistDetails from './orderlistDetails.vue';
 import { mapMutations } from 'vuex';
 export default {
   name: 'list',

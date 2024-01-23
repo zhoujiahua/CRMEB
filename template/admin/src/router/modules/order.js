@@ -30,7 +30,7 @@ export default {
         auth: ['admin-order-storeOrder-index'],
         title: '订单管理',
       },
-      component: () => import('@/pages/order/orderList/index'),
+      // component: () => import('@/pages/order/orderList/index'),
     },
     {
       path: 'offline',
