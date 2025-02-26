@@ -86,7 +86,7 @@ CRMEB开源商城Java版：https://gitee.com/ZhongBangKeJi/crmeb_java
 
 ###  📱 系统演示
 
-![输入图片说明](readme/pic/公众号.jpg)
+![输入图片说明](readme/pic/contact.jpg)
 
 管理后台： http://v5.crmeb.net/admin
 
@@ -245,12 +245,17 @@ Apache License 2.0 是一种宽松的开源许可，允许人们自由使用、�
 All rights reserved。
 
 CRMEB® 商标和著作权所有者为西安众邦网络科技有限公司。
-
 ---
 
-###  📕 多商户PHP
+###  📕 CRMEB PRO版
 
-[![输入图片说明](readme/pic/多商户PHP.jpg)](https://www.crmeb.com/index/merchant)
+[![输入图片说明](readme/pic/PRO版.jpg)](https://www.crmeb.com/index/pro)
+
+
+
+###  📕 CRMEB 多商户版
+
+[![输入图片说明](readme/pic/duoshanghu.jpg)](https://www.crmeb.com/index/merchant)
 
 ---
 
