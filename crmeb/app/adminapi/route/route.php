@@ -19,13 +19,10 @@ use app\http\middleware\AllowOriginMiddleware;
 Route::group(function () {
     //升级程序
     Route::get('upgrade', 'UpgradeController/index');
-    Route::get('upgrade/run', 'UpgradeController/upgrade');
     //用户名密码登录
     Route::post('login', 'Login/login')->name('AdminLogin')->option(['real_name' => '下载表备份记录']);
     //后台登录页面数据
     Route::get('login/info', 'Login/info')->option(['real_name' => '登录信息']);
-    //下载文件
-    Route::get('download/[:key]', 'PublicController/download')->option(['real_name' => '下载文件']);
     //验证码
     Route::get('captcha_pro', 'Login/captcha')->name('')->option(['real_name' => '获取验证码']);
     //获取验证码
@@ -39,10 +36,25 @@ Route::group(function () {
 
     //扫码上传图片
     Route::post('image/scan_upload', 'PublicController/scanUpload')->option(['real_name' => '扫码上传图片']);
-    //路由导入
-    Route::get('route/import_api', 'PublicController/import')->option(['real_name' => '路由导入']);
+
 
 })->middleware(AllowOriginMiddleware::class)->option(['mark' => 'login', 'mark_name' => '登录相关']);
+
+/**
+ * 需授权的接口
+ */
+Route::group(function () {
+    //升级程序
+    Route::get('upgrade/run', 'UpgradeController/upgrade');
+    //路由导入
+    Route::get('route/import_api', 'PublicController/import')->option(['real_name' => '路由导入']);
+    //下载文件
+    Route::get('download/[:key]', 'PublicController/download')->option(['real_name' => '下载文件']);
+})->middleware([
+    AllowOriginMiddleware::class,
+    \app\adminapi\middleware\AdminAuthTokenMiddleware::class
+])->option(['mark' => 'system', 'mark_name' => '系统相关']);
+
 
 /**
  * miss 路由
