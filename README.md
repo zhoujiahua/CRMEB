@@ -9,21 +9,6 @@ CRMEB开源商城系统（PHP版）
 
 </div>
 
-<div align="center" >
-    <a href='https://gitee.com/ZhongBangKeJi/CRMEB/stargazers'>
-       <img src='https://gitee.com/ZhongBangKeJi/CRMEB/badge/star.svg?theme=gvp' alt='star'></img>
-    </a>
-    <a href="http://www.crmeb.com">
-        <img src="https://img.shields.io/badge/Licence-apache2.0-green.svg?style=flat" />
-    </a>
-    <a href="http://www.crmeb.com">
-        <img src="https://img.shields.io/badge/Edition-5.4-blue.svg" />
-    </a>
-     <a href="https://gitee.com/ZhongBangKeJi/CRMEB/repository/archive/master.zip">
-        <img src="https://img.shields.io/badge/Download-240m-red.svg" />
-    </a>
-</div>
-
 <div align="center" style="font-size: 15px;">
   用心做开源，我们也很需要你的鼓励！右上角Star🌟，等你点亮
 </div>
@@ -289,7 +274,4 @@ docker-compose一键部署：https://doc.crmeb.com/single_open/open_v54/20145
 
 [![输入图片说明](readme/pic/duoshanghu.jpg)](https://www.crmeb.com/index/merchant)
 
----
-
-[返回顶部 :fa-arrow-circle-up: ](https://gitee.com/ZhongBangKeJi/CRMEB#%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D)
 
