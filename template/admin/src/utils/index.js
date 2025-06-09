@@ -19,7 +19,7 @@ export function importAll(r) {
 }
 
 export function isPicUpload(file) {
-  const typeArry = ['.jpg', '.png', 'jpeg', '.JPG', '.PNG', '.JPEG', '.gif', '.GIF'];
+  const typeArry = ['.jpg', '.png', '.jpeg', '.JPG', '.PNG', '.JPEG', '.gif', '.GIF'];
   const type = file.name.substring(file.name.lastIndexOf('.'));
   const isImage = typeArry.indexOf(type) > -1;
   if (!isImage) {
@@ -46,4 +46,33 @@ export function isFileUpload(file) {
     Message.error('上传文件格式不对');
   }
   return isFile;
+}
+export function isXlsUpload(file) {
+  const typeArry = ['.xls', '.xlsx'];
+  const type = file.name.substring(file.name.lastIndexOf('.'));
+  const isFile = typeArry.indexOf(type) > -1;
+  if (!isFile) {
+    Message.error('上传文件格式不对');
+  }
+  return isFile;
+}
+
+export function arraysEqual(arr1, arr2) {
+  // 如果两个数组的长度不同，直接返回 false
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  // 将两个数组分别排序
+  const sortedArr1 = arr1.slice().sort();
+  const sortedArr2 = arr2.slice().sort();
+
+  // 比较排序后的数组
+  for (let i = 0; i < sortedArr1.length; i++) {
+    if (sortedArr1[i] !== sortedArr2[i]) {
+      return false;
+    }
+  }
+
+  return true;
 }

@@ -34,7 +34,7 @@ class Request extends \think\Request
      * @var array
      */
     protected $except = ['menu_path', 'api_url', 'unique_auth',
-        'description', 'custom_form', 'content', 'tableField', 'url', 'customCode', 'value', 'refund_reason_wap_img'];
+        'description', 'custom_form', 'params_list', 'content', 'tableField', 'url', 'customCode', 'value', 'refund_reason_wap_img'];
 
     /**
      * 获取请求的数据
@@ -54,7 +54,7 @@ class Request extends \think\Request
                 if (!isset($param[1])) $param[1] = null;
                 if (!isset($param[2])) $param[2] = '';
                 if (is_array($param[0])) {
-                    $name = is_array($param[1]) ? $param[0][0] . '/a' : $param[0][0] . '/' . $param[0][1];
+                    $name = is_array($param[1]) ? $param[0][0] . '/a' : (sys_config('param_filter_type') == 1 ? $param[0] : $param[0][0] . '/' . $param[0][1]);
                     $keyName = $param[0][0];
                 } else {
                     $name = is_array($param[1]) ? $param[0] . '/a' : $param[0];
@@ -178,7 +178,7 @@ class Request extends \think\Request
     }
 
     /**
-     * 是否是app端
+     * 是否是pc端
      * @return bool
      */
     public function isPc()

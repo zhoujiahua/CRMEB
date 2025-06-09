@@ -191,4 +191,9 @@ class StoreOrderRefundDao extends BaseDao
             }
         })->field("FROM_UNIXTIME($field,'$timeType') as days,$str as num")->group('days')->select()->toArray();
     }
+
+    public function orderIsRefund($store_order_id)
+    {
+        return boolval($this->getModel()->where('store_order_id', $store_order_id)->whereIn('refund_type', [1, 2, 4, 5])->count());
+    }
 }

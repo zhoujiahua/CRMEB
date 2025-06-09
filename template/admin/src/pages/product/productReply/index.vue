@@ -7,7 +7,7 @@
           :model="formValidate"
           inline
           label-width="80px"
-          label-position="left"
+          label-position="right"
           @submit.native.prevent
         >
           <el-form-item label="评论时间：">
@@ -50,7 +50,7 @@
           </el-form-item>
           <el-form-item label="商品信息：" label-for="store_name">
             <el-input
-              placeholder="请输入商品ID或者商品信息"
+              placeholder="请输入商品信息"
               clearable
               v-model="formValidate.store_name"
               class="form_content_width"
@@ -148,8 +148,8 @@
               <a class="item" v-db-click @click="adopt(scope.row, '拒绝', 2)">驳回</a>
               <el-divider direction="vertical"></el-divider>
             </template>
-            <a v-db-click @click="reply(scope.row)">回复</a>
-            <el-divider direction="vertical"></el-divider>
+            <a v-if="scope.row.status != 2" v-db-click @click="reply(scope.row)">回复</a>
+            <el-divider v-if="scope.row.status != 2" direction="vertical"></el-divider>
             <a v-db-click @click="del(scope.row, '删除评论', scope.$index)">删除</a>
           </template>
         </el-table-column>
@@ -171,8 +171,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer">
+        <el-button @click="cancels">取消</el-button>
         <el-button type="primary" v-db-click @click="oks">确定</el-button>
-        <el-button v-db-click @click="cancels">取消</el-button>
       </div>
     </el-dialog>
     <addReply
@@ -192,7 +192,7 @@
     </el-dialog>
     <el-dialog :visible.sync="attrModal" title="选择商品规格" width="1000px">
       <el-table ref="table" :row-key="getRowKey" :data="goodsData.attrs" height="500">
-        <el-table-column label="" width="60">
+        <el-table-column label="" width="70">
           <template slot-scope="scope">
             <el-radio v-model="templateRadio" :label="scope.row.unique" @change.native="getTemplateRow(scope.row)"
               >&nbsp;</el-radio
@@ -202,7 +202,7 @@
         <el-table-column label="图片" width="120">
           <template slot-scope="scope">
             <div class="product-data">
-              <img class="image" :src="scope.row.image" />
+              <img class="image" :src="scope.row.pic" />
             </div>
           </template>
         </el-table-column>
@@ -336,7 +336,7 @@ export default {
     },
   },
   methods: {
-    // 通过
+    // 通过/驳回
     adopt(row, tit, num) {
       let delfromData = {
         title: tit,
@@ -509,63 +509,52 @@ export default {
   },
 };
 </script>
-<style scoped lang="stylus">
+<style lang="scss" scoped>
 .content_font {
   color: #2b85e4;
 }
-
 .search {
   ::v-deep .ivu-form-item-content {
     margin-left: 0 !important;
   }
 }
-
 .ivu-mt .Button .bnt {
   margin-right: 6px;
 }
-
 .ivu-mt .ivu-table-row {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.65);
 }
-
 .ivu-mt ::v-deep .ivu-table-cell {
   padding: 10px 0 !important;
 }
-
 .pictrue {
   width: 36px;
   height: 36px;
   display: inline-block;
   cursor: pointer;
 }
-
 .pictrue img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
 }
-
 .ivu-mt .imgPic .info {
   flex: 1;
   margin-left: 10px;
 }
-
 .ivu-mt .picList .pictrue {
   height: 36px;
   margin: 7px 3px 0 3px;
 }
-
 .ivu-mt .picList .pictrue img {
   height: 100%;
   display: block;
 }
-
 .product-data {
   display: flex;
   align-items: center;
-
   .image {
     width: 50px !important;
     height: 50px !important;

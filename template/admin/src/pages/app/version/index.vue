@@ -22,7 +22,7 @@
               placement="top-start"
               content="当前为最新线上版本!"
             >
-              <i class="el-icon-s-promotion" style="font-size: 16px;color: red;"></i>
+              <i class="el-icon-s-promotion" style="font-size: 16px; color: red"></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -61,6 +61,15 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="acea-row row-right page">
+        <pagination
+          v-if="total"
+          :total="total"
+          :page.sync="tableFrom.page"
+          :limit.sync="tableFrom.limit"
+          @pagination="getList"
+        />
+      </div>
     </el-card>
   </div>
 </template>
@@ -168,4 +177,4 @@ export default {
 };
 </script>
 
-<style scoped lang="stylus"></style>
+<style lang="scss" scoped></style>

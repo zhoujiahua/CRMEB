@@ -169,7 +169,7 @@ class StoreCombination extends AuthController
             }
         }
         $this->services->update($id, ['is_show' => $status]);
-        return app('json')->success($status == 0 ? 100014 : 100015);
+        return app('json')->success('设置成功');
     }
 
     /**

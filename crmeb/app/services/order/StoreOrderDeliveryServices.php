@@ -330,12 +330,21 @@ class StoreOrderDeliveryServices extends BaseServices
      * @param $orderId
      * @return bool|mixed
      */
-    public function orderDump($orderId)
+    public function orderDump($orderId, $type = 'order')
     {
         if (!$orderId) throw new AdminException(10100);
-        /** @var StoreOrderServices $orderService */
-        $orderService = app()->make(StoreOrderServices::class);
-        $orderInfo = $orderService->getOne(['id' => $orderId]);
+//        /** @var StoreOrderServices $orderService */
+//        $orderService = app()->make(StoreOrderServices::class);
+//        $orderInfo = $orderService->getOne(['id' => $orderId]);
+if ($type == 'order') {
+    /** @var StoreOrderServices $orderService */
+    $orderService = app()->make(StoreOrderServices::class);
+    $orderInfo = $orderService->getOne(['id' => $orderId]);
+} else {
+    /** @var StoreIntegralOrderServices $integralOrderService */
+    $integralOrderService = app()->make(StoreIntegralOrderServices::class);
+    $orderInfo = $integralOrderService->getOne(['id' => $orderId]);
+}
         if (!$orderInfo) throw new AdminException(400118);
         if ($orderInfo->shipping_type != 1) throw new AdminException(400481);
         if (!$orderInfo->express_dump) throw new AdminException(400482);
@@ -357,6 +366,7 @@ class StoreOrderDeliveryServices extends BaseServices
         $expData['cargo'] = $dumpInfo['cargo'];
         $expData['count'] = $orderInfo->total_num;
         $expData['order_id'] = $orderInfo->order_id;
+        $expData['weight'] = 1;
 
         return $expressService->express()->dump($expData);
     }

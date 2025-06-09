@@ -191,12 +191,13 @@ class ExpressServices extends BaseServices
      * @param string $cacheName
      * @param string $expressNum
      * @param string|null $com
+     * @param string $phone
      * @return array
      */
     public function query(string $cacheName, string $expressNum, string $com = null, $phone = '')
     {
         $resultData = CacheService::get($cacheName, null);
-        if ($resultData === null || !is_array($resultData)) {
+        if (!is_array($resultData) || empty($resultData)) {
             $data = [];
             $cacheTime = 0;
             switch ((int)sys_config('logistics_type')) {

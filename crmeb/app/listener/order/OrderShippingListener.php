@@ -87,7 +87,8 @@ class OrderShippingListener implements ListenerInterface
                     $shipping_list = [
                         [
                             'tracking_no' => $delivery_id ?? '',
-                            'express_company' => $delivery_name ? $expressData['$delivery_name'] : '',
+//                            'express_company' => $delivery_name ? $expressData[$delivery_name] : '',
+                            'express_company' => $delivery_name,
                             'item_desc' => $item_desc,
                             'contact' => [
                                 'receiver_contact' => $order['user_phone']

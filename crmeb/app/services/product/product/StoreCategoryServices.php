@@ -60,6 +60,13 @@ class StoreCategoryServices extends BaseServices
                 }
             }
         }
+        foreach ($list as &$value) {
+            if ($value['pid'] == 0) {
+                $value['url'] = '/pages/goods/goods_list/index?cid=' . $value['id'] . '&title=' . $value['cate_name'];
+            } else {
+                $value['url'] = '/pages/goods/goods_list/index?sid=' . $value['id'] . '&title=' . $value['cate_name'];
+            }
+        }
         $list = get_tree_children($list);
         $count = $this->dao->count($where);
         return compact('list', 'count');
@@ -171,9 +178,9 @@ class StoreCategoryServices extends BaseServices
     public function menus($pid = '')
     {
         $list = $this->dao->getMenus(['pid' => 0]);
-        $menus = [['value' => 0, 'label' => '顶级菜单']];
+        $menus = [['value' => 0, 'label' => '顶级分类']];
         if ($pid === 0) return $menus;
-        if ($pid != '') $menus = [];
+//        if ($pid != '') $menus = [];
         foreach ($list as $menu) {
             $menus[] = ['value' => $menu['id'], 'label' => $menu['cate_name']];
         }

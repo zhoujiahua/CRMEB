@@ -10,12 +10,12 @@
 // +----------------------------------------------------------------------
 
 return [
-    //默认上传模式,后台配置优先,添加类型一定索引要和驱动名一致 用小些字母
+    //默认上传模式,后台配置优先,添加类型一定索引要和驱动名一致 用小写字母
     'default' => 'local',
     //上传文件大小
     'filesize' => 2097152,
     //上传文件后缀类型
-    'fileExt' => ['jpg', 'jpeg', 'png', 'gif', 'pem', 'mp3', 'wma', 'wav', 'amr', 'mp4', 'key', 'xlsx', 'xls', 'txt', 'ico'],
+    'fileExt' => ['jpg', 'jpeg', 'png', 'gif', 'pem', 'mp3', 'wma', 'wav', 'amr', 'mp4', 'key', 'xlsx', 'xls', 'txt', 'ico', 'crt'],
     //上传文件类型
     'fileMime' => [
         'image/jpg',

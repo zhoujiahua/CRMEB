@@ -85,6 +85,18 @@ Route::group('product', function () {
         Route::post('generate_attr/:id/:type', 'v1.product.StoreProduct/is_format_attr')->option(['real_name' => '生成商品规格列表']);
         //商品批量操作
         Route::post('batch/setting', 'v1.product.StoreProduct/batchSetting')->option(['real_name' => '商品批量设置']);
+        //商品类型接口
+        Route::get('product_type_config', 'v1.product.StoreProduct/productTypeConfig')->option(['real_name' => '商品类型接口']);
+        //商品迁移导出
+        Route::get('product_export', 'v1.product.StoreProduct/productExport')->option(['real_name' => '商品迁移导出']);
+        //商品迁移导入
+        Route::post('product_import', 'v1.product.StoreProduct/productImport')->option(['real_name' => '商品迁移导出']);
+        //回收站商品彻底删除
+        Route::delete('full_del/:id', 'v1.product.StoreProduct/fullDel')->option(['real_name' => '回收站商品彻底删除']);
+
+        Route::get('other_info/:id/:type', 'v1.product.StoreProduct/otherInfo')->option(['real_name' => '商品其他信息']);
+        Route::post('other_save/:id/:type', 'v1.product.StoreProduct/otherSave')->option(['real_name' => '修改商品其他信息']);
+
     })->option(['parent' => 'product', 'cate_name' => '商品']);
 
     /** 商品评论 */
@@ -114,6 +126,42 @@ Route::group('product', function () {
         //保存商品数据
         Route::post('crawl/save', 'v1.product.CopyTaobao/save_product')->option(['real_name' => '保存采集商品数据']);
     })->option(['parent' => 'product', 'cate_name' => '商品采集']);
+
+    /** 商品标签 */
+    Route::group(function () {
+        //商品标签分类
+        Route::get('label_cate/list', 'v1.product.StoreProductLabel/labelCateList')->option(['real_name' => '商品标签分类']);
+        Route::get('label_cate/form/:id', 'v1.product.StoreProductLabel/labelCateForm')->option(['real_name' => '商品标签分类添加表单']);
+        Route::post('label_cate/save/:id', 'v1.product.StoreProductLabel/labelCateSave')->option(['real_name' => '商品标签分类保存']);
+        Route::delete('label_cate/del/:id', 'v1.product.StoreProductLabel/labelCateDel')->option(['real_name' => '商品标签分类删除']);
+        Route::get('label/list', 'v1.product.StoreProductLabel/labelList')->option(['real_name' => '商品标签列表']);
+        Route::get('label/info/:id', 'v1.product.StoreProductLabel/labelInfo')->option(['real_name' => '商品标签详情']);
+        Route::post('label/save', 'v1.product.StoreProductLabel/labelSave')->option(['real_name' => '商品标签保存']);
+        Route::delete('label/del/:id', 'v1.product.StoreProductLabel/labelDel')->option(['real_name' => '商品标签删除']);
+        Route::put('label/status/:id/:status', 'v1.product.StoreProductLabel/labelStatus')->option(['real_name' => '修改商品标签状态']);
+        Route::put('label/is_show/:id/:is_show', 'v1.product.StoreProductLabel/labelIsShow')->option(['real_name' => '修改商品标签显示']);
+        Route::get('label/use_list', 'v1.product.StoreProductLabel/labelUseList')->option(['real_name' => '使用商品标签列表']);
+    })->option(['parent' => 'product', 'cate_name' => '商品标签']);
+
+    /** 商品参数 */
+    Route::group(function () {
+        Route::get('param/list', 'v1.product.StoreProductParam/getParamList')->option(['real_name' => '商品参数列表']);
+        Route::get('param/info/:id', 'v1.product.StoreProductParam/getParamInfo')->option(['real_name' => '商品参数详情']);
+        Route::get('param/value/:id', 'v1.product.StoreProductParam/getParamValue')->option(['real_name' => '商品参数值']);
+        Route::post('param/save/:id', 'v1.product.StoreProductParam/saveParamData')->option(['real_name' => '保存商品参数']);
+        Route::put('param/status/:id/:status', 'v1.product.StoreProductParam/setParamStatus')->option(['real_name' => '修改商品参数状态']);
+        Route::delete('param/del/:id', 'v1.product.StoreProductParam/delParamData')->option(['real_name' => '删除商品参数']);
+    })->option(['parent' => 'product', 'cate_name' => '商品参数']);
+
+    /** 商品保障 */
+    Route::group(function () {
+        Route::get('protection/list', 'v1.product.StoreProductProtection/protectionList')->option(['real_name' => '商品保障列表']);
+        Route::get('protection/info/:id', 'v1.product.StoreProductProtection/protectionInfo')->option(['real_name' => '商品保障详情']);
+        Route::get('protection/form/:id', 'v1.product.StoreProductProtection/protectionForm')->option(['real_name' => '商品保障表单']);
+        Route::post('protection/save/:id', 'v1.product.StoreProductProtection/protectionSave')->option(['real_name' => '保存商品保障']);
+        Route::put('protection/status/:id/:status', 'v1.product.StoreProductProtection/protectionStatus')->option(['real_name' => '修改商品保障状态']);
+        Route::delete('protection/del/:id', 'v1.product.StoreProductProtection/protectionDel')->option(['real_name' => '删除商品保障']);
+    })->option(['parent' => 'product', 'cate_name' => '商品参数']);
 
 })->middleware([
     \app\http\middleware\AllowOriginMiddleware::class,

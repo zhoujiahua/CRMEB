@@ -232,7 +232,6 @@ export default {
 }
 ::v-deep .el-table--border {
   border: 1px solid #333 !important;
-  border-bottom: 0px !important;
 }
 ::v-deep .el-table:before {
   background-color: #333;

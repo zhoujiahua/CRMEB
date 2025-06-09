@@ -12,6 +12,7 @@ namespace app\adminapi\controller\v1\product;
 
 
 use app\adminapi\controller\AuthController;
+use app\adminapi\controller\v1\system\SystemClearData;
 use app\services\order\StoreCartServices;
 use app\services\other\CacheServices;
 use app\services\product\product\StoreCategoryServices;
@@ -44,6 +45,12 @@ class StoreProduct extends AuthController
         $where = $this->request->getMore([
             ['store_name', ''],
             ['cate_id', ''],
+            ['spec_type', ''],
+            ['is_gift', ''],
+            ['vip_product', ''],
+            ['price_s', []],
+            ['stock_s', []],
+            ['sales_s', []],
         ]);
         $list = $this->service->getHeader($where);
         return app('json')->success(compact('list'));
@@ -127,7 +134,17 @@ class StoreProduct extends AuthController
             ['store_name', ''],
             ['cate_id', ''],
             ['type', 1],
-            ['sales', 'normal']
+            ['sales', 'normal'],
+            ['spec_type', ''],
+            ['is_gift', ''],
+            ['vip_product', ''],
+            ['price_s', []],
+            ['stock_s', []],
+            ['sales_s', []],
+            ['store_label_id', []],
+            ['logistics', ''],
+            ['time', ''],
+            ['virtual_type', ''],
         ]);
         $data = $this->service->getList($where);
         return app('json')->success($data);
@@ -246,6 +263,11 @@ class StoreProduct extends AuthController
             ['limit_type', 0],//限购类型
             ['limit_num', 0],//限购数量
             ['min_qty', 1],//起购数量
+            ['params_list', []],//商品参数
+            ['label_list', []],//商品标签
+            ['protection_list', []],//商品保障
+            ['is_gift', 0],//是否礼品
+            ['gift_price', 0],//礼品附加费
         ]);
         $this->service->save((int)$id, $data);
         return app('json')->success(100000);
@@ -282,7 +304,6 @@ class StoreProduct extends AuthController
             ['is_virtual', 0],
             ['virtual_type', 0]
         ]);
-        if ($id > 0 && $type == 1) $this->service->checkActivity($id);
         $info = $this->service->getAttr($data, $id, $type);
         return app('json')->success(compact('info'));
     }
@@ -305,7 +326,7 @@ class StoreProduct extends AuthController
             ['is_show', 1],
         ]);
         $where['is_del'] = 0;
-        $where['cate_id'] = stringToIntArray($where['cate_id']);
+        $where['cate_id'] = toIntArray($where['cate_id']);
         /** @var StoreCategoryServices $storeCategoryServices */
         $storeCategoryServices = app()->make(StoreCategoryServices::class);
         if ($where['cate_id'] !== '') {
@@ -391,9 +412,14 @@ class StoreProduct extends AuthController
         ]);
         if (!$data['file']) return app('json')->fail(400168);
         $file = public_path() . substr($data['file'], 1);
+        // 获取文件后缀
+        $suffix = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        if (!in_array($suffix, ['xls', 'xlsx'])) {
+            return app('json')->fail('文件格式不正确，请上传xls或xlsx格式的文件！');
+        }
         /** @var FileService $readExcelService */
         $readExcelService = app()->make(FileService::class);
-        $cardData = $readExcelService->readExcel($file, 'card');
+        $cardData = $readExcelService->readExcel($file, 'card', 1, ucfirst($suffix));
         return app('json')->success($cardData);
     }
 
@@ -418,5 +444,90 @@ class StoreProduct extends AuthController
         ]);
         $this->service->batchSetting($data);
         return app('json')->success(100014);
+    }
+
+    /**
+     * 商品类型接口
+     * @return \think\Response
+     * @author wuhaotian
+     * @email 442384644@qq.com
+     * @date 2024/9/29
+     */
+    public function productTypeConfig()
+    {
+        $productTypeConfig = sys_config('product_type_config');
+        foreach ($productTypeConfig as $key => $value) {
+            $productTypeConfig[$key] = intval($value);
+        }
+        return app('json')->success(sys_config('product_type_config'));
+    }
+
+    /**
+     * 商品迁移导出
+     * @return \think\Response
+     * @author wuhaotian
+     * @email 442384644@qq.com
+     * @date 2024/10/9
+     */
+    public function productExport()
+    {
+        $where = $this->request->getMore([
+            ['store_name', ''],
+            ['cate_id', ''],
+            ['type', 1],
+            ['sales', 'normal']
+        ]);
+        $where['virtual_type'] = 0;
+        return app('json')->success($this->service->productExportList($where));
+    }
+
+    /**
+     * 商品迁移导入
+     * @return \think\Response
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @author wuhaotian
+     * @email 442384644@qq.com
+     * @date 2024/10/9
+     */
+    public function productImport()
+    {
+        [$file] = $this->request->getMore([
+            ['file', ""]
+        ], true);
+        if (!$file) return app('json')->fail(400168);
+        $res = $this->service->productImport($file);
+        return app('json')->success('导入成功', $res);
+    }
+
+    /**
+     * 回收站商品彻底删除
+     * @param $id
+     * @return \think\Response
+     * @author wuhaotian
+     * @email 442384644@qq.com
+     * @date 2024/10/9
+     */
+    public function fullDel($id)
+    {
+        app()->make(SystemClearData::class)->recycleProduct($id);
+        return app('json')->success('删除成功');
+    }
+
+    public function otherInfo($id, $type)
+    {
+        if (!$id) return app('json')->fail('参数错误');
+        return app('json')->success($this->service->otherInfo($id, $type));
+    }
+
+    public function otherSave($id, $type)
+    {
+        $data = $this->request->postMore([
+            ['is_sub', 0],
+            ['is_vip', 0],
+            ['vip_product', 0],
+            ['attr_value', []],
+        ]);
+        $this->service->otherSave($id, $type, $data);
+        return app('json')->success('保存成功');
     }
 }

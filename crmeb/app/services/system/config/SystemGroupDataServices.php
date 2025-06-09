@@ -282,7 +282,7 @@ class SystemGroupDataServices extends BaseServices
     {
         $systemGroup = [];
         if (!empty($ids)) {
-            $systemGroupData = $this->dao->idByGroupList($ids);
+            $systemGroupData = $this->dao->idByGroupList($ids, '*');
             if (!empty($systemGroupData))
                 $systemGroup = array_combine(array_column($systemGroupData, 'id'), $systemGroupData);
         }

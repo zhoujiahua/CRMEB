@@ -111,6 +111,15 @@ Route::group('marketing', function () {
         Route::get('seckill/statistics/people/:id', 'v1.marketing.StoreSeckill/seckillPeople')->option(['real_name' => '秒杀参与人']);
         //秒杀订单
         Route::get('seckill/statistics/order/:id', 'v1.marketing.StoreSeckill/seckillOrder')->option(['real_name' => '秒杀参与人']);
+
+        Route::get('seckill_activity/list', 'v1.marketing.StoreSeckill/seckillActivityList')->option(['real_name' => '秒杀活动列表']);
+        Route::get('seckill_activity/info/:id', 'v1.marketing.StoreSeckill/seckillActivityInfo')->option(['real_name' => '秒杀活动详情']);
+        Route::post('seckill_activity/save/:id', 'v1.marketing.StoreSeckill/seckillActivitySave')->option(['real_name' => '新增或修改秒杀活动']);
+        Route::delete('seckill_activity/del/:id', 'v1.marketing.StoreSeckill/seckillActivityDel')->option(['real_name' => '删除秒杀活动']);
+        Route::put('seckill_activity/status/:id/:status', 'v1.marketing.StoreSeckill/seckillActivityStatus')->option(['real_name' => '修改秒杀活动状态']);
+
+
+
     })->option(['parent' => 'marketing', 'cate_name' => '秒杀活动']);
 
     /** 积分活动 */
@@ -182,8 +191,6 @@ Route::group('marketing', function () {
         Route::get('lottery/list', 'v1.marketing.lottery.LuckLottery/index')->option(['real_name' => '抽奖活动列表']);
         //抽奖活动详情
         Route::get('lottery/detail/:id', 'v1.marketing.lottery.LuckLottery/detail')->option(['real_name' => '抽奖活动详情']);
-        //抽奖活动详情
-        Route::get('lottery/factor_info/:factor', 'v1.marketing.lottery.LuckLottery/factorInfo')->option(['real_name' => '抽奖活动详情']);
         //添加抽奖活动
         Route::post('lottery/add', 'v1.marketing.lottery.LuckLottery/add')->option(['real_name' => '添加抽奖活动']);
         //修改抽奖活动数据
@@ -191,11 +198,16 @@ Route::group('marketing', function () {
         //删除抽奖活动
         Route::delete('lottery/del/:id', 'v1.marketing.lottery.LuckLottery/delete')->option(['real_name' => '删除抽奖活动']);
         //设置抽奖活动是否显示
-        Route::post('lottery/set_status/:id/:status', 'v1.marketing.lottery.LuckLottery/setStatus')->option(['real_name' => '设置抽奖活动是否显示']);
+        Route::put('lottery/set_status/:id/:status', 'v1.marketing.lottery.LuckLottery/setStatus')->option(['real_name' => '设置抽奖活动是否显示']);
         //抽奖记录列表
         Route::get('lottery/record/list', 'v1.marketing.lottery.LuckLotteryRecord/index')->option(['real_name' => '抽奖记录列表']);
         //抽奖中奖发货、备注处理
         Route::post('lottery/record/deliver', 'v1.marketing.lottery.LuckLotteryRecord/deliver')->option(['real_name' => '抽奖中奖发货、备注处理']);
+        //分类抽奖列表
+        Route::get('lottery/factor/list', 'v1.marketing.lottery.LuckLottery/factorList')->option(['real_name' => '分类抽奖列表']);
+        //保存抽奖配置
+        Route::post('lottery/factor/use', 'v1.marketing.lottery.LuckLottery/factorUse')->option(['real_name' => '保存抽奖使用状态']);
+
     })->option(['parent' => 'marketing', 'cate_name' => '抽奖活动']);
 
     /** 每日签到 */

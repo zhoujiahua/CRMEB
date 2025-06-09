@@ -51,13 +51,6 @@ export default {
         break;
     }
     return result;
-    // if (config.type === 'COS') {
-    //   return this.cosUpload(config.evfile, config.res.data, config.uploading);
-    // } else if (config.type === 'OSS') {
-    //   return this.ossHttp(config.evfile, config.res, config.uploading);
-    // } else {
-    //   return this.qiniuHttp(config.evfile, config.res, config.uploading);
-    // }
   },
   cosUpload(file, config, uploading) {
     let cos = new Cos({
@@ -182,45 +175,6 @@ export default {
         });
     });
   },
-  // qiniuHttp(evfile, res, videoIng) {
-  //   let uptoken = res.data.token;
-  //   let file = evfile.target.files[0]; // Blob 对象，上传的文件
-  //   let Key = file.name; // 上传后文件资源名以设置的 key 为主，如果 key 为 null 或者 undefined，则文件资源名会以 hash 值作为资源名。
-  //   let pos = Key.lastIndexOf('.');
-  //   let suffix = '';
-  //   if (pos !== -1) {
-  //     suffix = Key.substring(pos);
-  //   }
-  //   let filename = new Date().getTime() + suffix;
-  //   let fileUrl = res.data.domain + '/' + filename;
-  //   let config = {
-  //     useCdnDomain: true,
-  //   };
-  //   let putExtra = {
-  //     fname: '', // 文件原文件名
-  //     params: {}, // 用来放置自定义变量
-  //     mimeType: null, // 用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
-  //   };
-  //   let observable = qiniu.upload(file, filename, uptoken, putExtra, config);
-  //   return new Promise((resolve, reject) => {
-  //     observable.subscribe({
-  //       next: (result) => {
-  //         let progress = Math.round(result.total.loaded / result.total.size);
-  //         videoIng(true, progress);
-  //         // 主要用来展示进度
-  //       },
-  //       error: (errResult) => {
-  //         // 失败报错信息
-  //         reject({ msg: errResult });
-  //       },
-  //       complete: (result) => {
-  //         // 接收成功后返回的信息
-  //         videoIng(false, 0);
-  //         resolve({ url: fileUrl });
-  //       },
-  //     });
-  //   });
-  // },
   obsHttp(file, res, videoIng) {
     const fileObject = file.target.files[0];
     const Key = fileObject.name;
@@ -306,19 +260,23 @@ export default {
       mimeType: null, // 用来限制上传文件类型，为 null 时表示不对文件类型限制；限制类型放到数组里： ["image/png", "image/jpeg", "image/gif"]
     };
     const observable = qiniu.upload(file, filename, uptoken, putExtra, config);
+
     return new Promise((resolve, reject) => {
       observable.subscribe({
         next: (result) => {
+          console.log(videoIng)
           const progress = Math.round(result.total.loaded / result.total.size);
           videoIng(true, progress);
           // 主要用来展示进度
         },
         error: (errResult) => {
           // 失败报错信息
+          console.log(errResult);
           reject({ msg: errResult });
         },
         complete: (result) => {
           // 接收成功后返回的信息
+          console.log(result,'result');
           videoIng(false, 0);
           resolve({ url: res.data.cdn ? res.data.cdn + '/' + filename : fileUrl });
         },
