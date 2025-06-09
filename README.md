@@ -24,8 +24,7 @@ CRMEB开源商城系统（PHP版）
 [在线体验](http://v4.crmeb.net/admin/) |
 [帮助文档](https://doc.crmeb.com/single_open) |
 [应用市场](https://www.crmeb.com/market/) |
-[技术社区](https://www.crmeb.com/ask/thread/list/147) |
-[宽屏预览](https://gitee.com/ZhongBangKeJi/CRMEB/blob/master/README.md)
+[技术社区](https://www.crmeb.com/ask/thread/list/147)
 
 
 
@@ -61,7 +60,7 @@ CRMEB开源商城系统代码100%开源，基于 **Apache-2.0协议** 免费商�
 我们致力于打造开发者友好生态，开放源码、持续更新功能模块，并欢迎开发者提交优化建议或贡献代码。通过共享技术成果，降低行业重复造轮子成本，推动开源电商系统的可持续发展。
 
 
-🔗 <a href="https://doc.crmeb.com/single_open/open_v54/19855" target="_blank">功能列表</a> | 📩 <a href="https://gitee.com/ZhongBangKeJi/CRMEB/issues" target="_blank">提交反馈</a> | 📩 <a href="https://gitee.com/ZhongBangKeJi/CRMEB/pulls" target="_blank">提交代码</a>
+🔗 <a href="https://doc.crmeb.com/single_open/open_v54/19855" target="_blank">功能列表</a> | 📩 <a href="https://github.com/crmeb/CRMEB/issues" target="_blank">提交反馈</a> | 📩 <a href="https://github.com/crmeb/CRMEB/pulls" target="_blank">提交代码</a>
 
 
 
