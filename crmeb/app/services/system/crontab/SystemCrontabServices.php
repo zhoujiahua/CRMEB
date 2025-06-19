@@ -245,6 +245,11 @@ class SystemCrontabServices extends BaseServices
         $crontabRunServices = app()->make(CrontabRunServices::class);
         // 创建一个每秒钟执行一次的定时任务
         new Crontab('*/1 * * * * *', function () use ($task, $crontabRunServices) {
+            // 写入时间戳，用于检测定时任务是否正常执行
+            $timerTime = file_get_contents(root_path() . 'runtime/.timer');
+            if ($timerTime < (time() - 60)) {
+                file_put_contents(root_path() . 'runtime/.timer', time());
+            }
             // 从缓存中获取定时任务列表
             $list = Cache::get('crontabCache');
             if (!$list) {

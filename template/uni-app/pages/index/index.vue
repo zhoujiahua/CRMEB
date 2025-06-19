@@ -102,13 +102,16 @@
 					<view v-if="configData && configData.record_No" class="site-config" @click="goICP(configData.icp_url)">{{ configData.record_No }}</view>
 					<view class="site-config" v-if="configData && configData.network_security" @click="goICP(configData.network_security_url)">
 						<image class="ban" src="/static/images/beian.png" alt="" srcset="" />
-						{{configData.network_security}}
+						{{ configData.network_security }}
 					</view>
 					<!-- #endif -->
 					<view class="pb-safe" :style="[pdHeights]" v-if="isFooter"></view>
 					<pageFooter :configData="footerConfigData" @newDataStatus="newDataStatus"></pageFooter>
 				</view>
 			</view>
+			<!-- #ifdef APP -->
+			<app-update ref="appUpdate" :force="true" :tabbar="false"></app-update>
+			<!-- #endif -->
 		</view>
 		<view v-else>
 			<view class="error-network">
@@ -180,6 +183,8 @@ import { HTTP_REQUEST_URL } from '@/config/app';
 import pageFooter from '@/components/pageFooter/index.vue';
 import Loading from '@/components/Loading/index.vue';
 import Cache from '@/utils/cache';
+import appUpdate from '@/components/update/app-update.vue';
+
 export default {
 	computed: {
 		// #ifdef MP
@@ -243,7 +248,10 @@ export default {
 		hotspot,
 		follow,
 		waterfallsFlow,
-		emptyPage
+		emptyPage,
+		// #ifdef APP
+		appUpdate
+		// #endif
 	},
 	data() {
 		return {
@@ -285,7 +293,7 @@ export default {
 			homeCombData: {},
 			headerSerchCombData: {},
 			cateNavData: {},
-			footerConfigData:{},
+			footerConfigData: {},
 			bgColor: '',
 			bgPic: '',
 			bgTabVal: '',
@@ -724,7 +732,7 @@ export default {
 			let lastArr = this.objToArr(data.value);
 			lastArr.forEach((item, index, arr) => {
 				if (item.name == 'pageFoot') {
-					this.footerConfigData = item
+					this.footerConfigData = item;
 				}
 				if (item.name === 'homeComb' && !item.isHide) {
 					this.showHomeComb = true;
@@ -1015,7 +1023,7 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	.ban{
+	.ban {
 		width: 22rpx;
 		height: 24rpx;
 		margin-right: 10rpx;

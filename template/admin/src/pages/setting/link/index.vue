@@ -341,7 +341,7 @@ export default {
     },
     // 编辑树表单
     editLinkCategory(data, type) {
-      this.$modalForm(linkCategoryFormApi(type ? data.id : 1, data.pid ? data.pid : 1)).then(() => this.getList());
+      this.$modalForm(linkCategoryFormApi(type ? data.id : 0, data.id ? data.id : 1)).then(() => this.getList());
     },
     // 分类列表树
     getList(type) {

@@ -605,8 +605,8 @@ export default {
     modalPicTap(type, tableName, index) {
       this.$emit('modalPicTap', type, tableName, index);
     },
-    handleRemove2(index) {
-      this.$emit('handleRemove2', index);
+    handleRemove2(index, type, tableName) {
+      this.$emit('handleRemove2', index, type, tableName);
     },
     batchAdd() {
       this.$emit('batchAdd');
@@ -619,6 +619,12 @@ export default {
     },
     handleFocus(e) {
       this.$emit('handleFocus', e);
+    },
+    attrDetailChangeValue(val, index) {
+      this.$emit('attrDetailChangeValue', val, index);
+    },
+    handleBlur(e) {
+      this.$emit('handleBlur', e);
     },
     attrChangeValue(val, index) {
       this.$emit('attrChangeValue', val, index);

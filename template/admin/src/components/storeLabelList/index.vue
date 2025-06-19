@@ -59,10 +59,8 @@ export default {
       }
       return false;
     },
-    // 用户标签
     storeLabel(data) {
       this.dataLabel = data || [];
-      console.log(this.dataLabel, 'datadatadata');
       productLabelUseListApi()
         .then((res) => {
           res.data.map((el) => {

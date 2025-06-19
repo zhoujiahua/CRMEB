@@ -45,7 +45,7 @@
     <el-col :span="24">
       <div class="line"></div>
     </el-col>
-    <el-col :span="24">
+    <el-col v-if="formValidate.virtual_type == 0" :span="24">
       <el-form-item label="起购数量：">
         <el-input-number
           :controls="false"
@@ -97,7 +97,7 @@
         </div>
       </el-form-item>
     </el-col>
-    <el-col :span="24">
+    <el-col  v-if="formValidate.is_limit" :span="24">
       <div class="line"></div>
     </el-col>
     <el-col :span="24" v-if="formValidate.virtual_type == 0 || formValidate.virtual_type == 3">

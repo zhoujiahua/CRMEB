@@ -107,7 +107,7 @@
           }}</el-checkbox>
         </el-checkbox-group>
         <el-button v-else type="primary" v-db-click @click="addProtection">添加保障</el-button>
-        <div class="tips-info">用户下单时需填写的保障信息，可多选</div>
+        <div class="tips-info">商品详情中显示的服务保障信息，可多选</div>
       </el-form-item>
     </el-col>
     <el-col :span="24">

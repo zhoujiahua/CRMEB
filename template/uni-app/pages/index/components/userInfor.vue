@@ -223,8 +223,6 @@
 			}
 		},
 		methods: {
-			hello(res) {
-			},
 			getCode() {
 				getRandCode().then(res => {
 					let code = res.data.code;

@@ -116,7 +116,7 @@
                   :max="9999999999"
                   class="priceBox input-number-unit-class"
                   class-unit="元"
-                  @change="changeVipPrice(scope.$index, 'oneFormValidate')"
+                  @input="changeVipPrice(0, 'oneFormValidate')"
                 ></el-input-number>
               </template>
               <template v-else-if="item.slot === 'vip_proportion'">
@@ -127,7 +127,7 @@
                   :max="9999999999"
                   class="priceBox input-number-unit-class"
                   class-unit="%"
-                  @change="changeDiscount(scope.$index, 'oneFormValidate')"
+                  @input="changeDiscount(0, 'oneFormValidate')"
                 ></el-input-number>
               </template>
             </template>
@@ -143,7 +143,8 @@
             placeholder="请输入一级返佣"
             class="columnsBox input_width input-number-unit-class"
             class-unit="元"
-            v-model="manyBrokerage"
+            :value="manyBrokerage"
+            @input="(val) => $emit('update:manyBrokerage', val)"
           >
           </el-input-number>
           <span class="brokerage">二级返佣：</span
@@ -152,7 +153,8 @@
             placeholder="请输入二级返佣"
             class="columnsBox input_width input-number-unit-class"
             class-unit="元"
-            v-model="manyBrokerageTwo"
+            :value="manyBrokerageTwo"
+            @input="(val) => $emit('update:manyBrokerageTwo', val)"
           ></el-input-number>
         </span>
         <span class="brokerage" v-if="formValidate.is_sub.indexOf(0) > -1">
@@ -163,8 +165,9 @@
             :max="9999999999"
             class="columnsBox input_width input-number-unit-class"
             class-unit="元"
-            v-model="manyVipPrice"
-            @focus="manyVipDiscount = undefined"
+            :value="manyVipPrice"
+            @input="(val) => $emit('update:manyVipPrice', val)"
+            @focus="$emit('update:manyVipDiscount', undefined)"
           ></el-input-number>
         </span>
         <span class="brokerage" v-if="formValidate.is_sub.indexOf(0) > -1">
@@ -175,8 +178,9 @@
             :max="9999999999"
             class="columnsBox input_width input-number-unit-class"
             class-unit="%"
-            v-model="manyVipDiscount"
-            @focus="manyVipPrice = undefined"
+            :value="manyVipDiscount"
+            @input="(val) => $emit('update:manyVipDiscount', val)"
+            @focus="$emit('update:manyVipPrice', undefined)"
           ></el-input-number>
         </span>
         <el-button type="primary" v-db-click @click="brokerageSetUp">批量设置</el-button>
@@ -258,43 +262,71 @@
               <template v-else-if="item.slot === 'brokerage'">
                 <el-input-number
                   :controls="false"
-                  v-model="manyFormValidate[scope.$index + 1].brokerage"
+                  :value="manyFormValidate[scope.$index + 1].brokerage"
                   :min="0"
                   :max="9999999999"
                   class="priceBox input-number-unit-class"
                   class-unit="元"
+                  @input="
+                    (val) => {
+                      const newData = [...manyFormValidate];
+                      newData[scope.$index + 1].brokerage = val;
+                      $emit('update:manyFormValidate', newData);
+                    }
+                  "
                 ></el-input-number>
               </template>
               <template v-else-if="item.slot === 'brokerage_two'">
                 <el-input-number
                   :controls="false"
-                  v-model="manyFormValidate[scope.$index + 1].brokerage_two"
+                  :value="manyFormValidate[scope.$index + 1].brokerage_two"
                   :min="0"
                   :max="9999999999"
                   class="priceBox input-number-unit-class"
                   class-unit="元"
+                  @input="
+                    (val) => {
+                      const newData = [...manyFormValidate];
+                      newData[scope.$index + 1].brokerage_two = val;
+                      $emit('update:manyFormValidate', newData);
+                    }
+                  "
                 ></el-input-number>
               </template>
               <template v-else-if="item.slot === 'vip_price'">
                 <el-input-number
                   :controls="false"
-                  v-model="manyFormValidate[scope.$index + 1].vip_price"
+                  :value="manyFormValidate[scope.$index + 1].vip_price"
                   :min="0"
                   :max="9999999999"
                   class="priceBox input-number-unit-class"
                   class-unit="元"
-                  @change="changeVipPrice(scope.$index + 1)"
+                  @input="
+                    (val) => {
+                      const newData = [...manyFormValidate];
+                      newData[scope.$index + 1].vip_price = val;
+                      $emit('update:manyFormValidate', newData);
+                      changeVipPrice(scope.$index + 1);
+                    }
+                  "
                 ></el-input-number>
               </template>
               <template v-else-if="item.slot === 'vip_proportion'">
                 <el-input-number
                   :controls="false"
-                  v-model="manyFormValidate[scope.$index + 1].vip_proportion"
+                  :value="manyFormValidate[scope.$index + 1].vip_proportion"
                   :min="0"
                   :max="9999999999"
                   class="priceBox input-number-unit-class"
                   class-unit="%"
-                  @change="changeDiscount(scope.$index + 1)"
+                  @input="
+                    (val) => {
+                      const newData = [...manyFormValidate];
+                      newData[scope.$index + 1].vip_proportion = val;
+                      $emit('update:manyFormValidate', newData);
+                      changeDiscount(scope.$index + 1);
+                    }
+                  "
                 ></el-input-number>
               </template>
             </template>
@@ -356,8 +388,8 @@ export default {
     changeDiscount(index, type) {
       this.$emit('changeDiscount', index, type);
     },
-    brokerageSetUp(val) {
-      this.$emit('brokerageSetUp', val);
+    brokerageSetUp() {
+      this.$emit('brokerageSetUp');
     },
   },
 };

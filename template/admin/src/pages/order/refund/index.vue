@@ -39,7 +39,7 @@
               class="mr20"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="订单号：" label-for="title">
+          <el-form-item label="订单搜索：" label-for="title">
             <el-input clearable v-model="pagination.order_id" placeholder="请输入订单号" class="form_content_width" />
           </el-form-item>
           <el-form-item>

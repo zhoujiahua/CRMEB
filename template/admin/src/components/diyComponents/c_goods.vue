@@ -6,7 +6,7 @@
           class="item"
           v-for="(goods, index) in defaults.goodsList.list"
           :key="index"
-          v-if="defaults.goodsList.list.length"
+          v-show="defaults.goodsList.list.length"
         >
           <img :src="type == 1 ? goods.pic : goods.image" alt="" />
           <span class="iconfont icondel_1" v-db-click @click.stop="bindDelete(index)"></span>

@@ -334,9 +334,9 @@ class DiyServices extends BaseServices
         $systemGroupServices = app()->make(SystemGroupServices::class);
         $menus_gid = $systemGroupServices->value(['config_name' => 'routine_my_menus'], 'id');
         $banner_gid = $systemGroupServices->value(['config_name' => 'routine_my_banner'], 'id');
-        $routine_my_menus = $systemGroupDataServices->getGroupDataList(['gid' => $menus_gid]);
+        $routine_my_menus = $systemGroupDataServices->getGroupDataList(['gid' => $menus_gid], 'all');
         $routine_my_menus = $routine_my_menus['list'] ?? [];
-        $routine_my_banner = $systemGroupDataServices->getGroupDataList(['gid' => $banner_gid]);
+        $routine_my_banner = $systemGroupDataServices->getGroupDataList(['gid' => $banner_gid], 'all');
         $routine_my_banner = $routine_my_banner['list'] ?? [];
         $my_banner_status = boolval($info['my_banner_status']);
         return compact('status', 'order_status', 'routine_my_menus', 'routine_my_banner', 'color_change', 'my_banner_status');

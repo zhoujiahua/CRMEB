@@ -406,6 +406,9 @@ class SystemConfig extends AuthController
                 return app('json')->fail('商品类型至少选择一项');
             }
         }
+        if (isset($post['yue_pay_status']) && $post['yue_pay_status'] == 1) {
+            $post['balance_func_status'] = 1;
+        }
         if (isset($post['pay_weixin_client_cert'])) {
             $certData = [
                 'type' => 'wechat',

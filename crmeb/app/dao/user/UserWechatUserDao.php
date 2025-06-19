@@ -179,7 +179,7 @@ class UserWechatUserDao extends BaseDao
                 $model = $model->whereBetween($userAlias . 'integral', $where['integral']);
             } elseif ($where['integral'][0] != '' && $where['integral'][1] == '') {
                 $model = $model->where($userAlias . 'integral', '>', $where['integral'][0]);
-            } elseif ($where['integral'][0] == '' && $where['integral'][1] != ''){
+            } elseif ($where['integral'][0] == '' && $where['integral'][1] != '') {
                 $model = $model->where($userAlias . 'integral', '<', $where['integral'][1]);
             }
         }

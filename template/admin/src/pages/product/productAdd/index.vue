@@ -107,10 +107,10 @@
           :manyFormValidate="manyFormValidate"
           :columnsInstall="columnsInstall"
           :columnsInstal2="columnsInstal2"
-          :manyBrokerage="manyBrokerage"
-          :manyBrokerageTwo="manyBrokerageTwo"
-          :manyVipPrice="manyVipPrice"
-          :manyVipDiscount="manyVipDiscount"
+          :manyBrokerage.sync="manyBrokerage"
+          :manyBrokerageTwo.sync="manyBrokerageTwo"
+          :manyVipPrice.sync="manyVipPrice"
+          :manyVipDiscount.sync="manyVipDiscount"
           @checkAllGroupChange="checkAllGroupChange"
           @changeVipPrice="changeVipPrice"
           @changeDiscount="changeDiscount"
@@ -1430,8 +1430,18 @@ export default {
       }
 
       // 批量设置商品规格属性
-      const batchFields = ['pic', 'price', 'cost', 'ot_price', 'stock', 'weight', 'volume'];
-      const defaultFields = ['bar_code', 'bar_code_number'];
+      const batchFields = [
+        'pic',
+        'price',
+        'cost',
+        'ot_price',
+        'stock',
+        'weight',
+        'volume',
+        'bar_code',
+        'bar_code_number',
+      ];
+      // const defaultFields = ['bar_code', 'bar_code_number'];
 
       for (let val of this.manyFormValidate) {
         const batch = this.oneFormBatch[0];
@@ -1439,7 +1449,7 @@ export default {
         if (!arr.length || this.isSubset(val.attr_arr, arr)) {
           // 设置有值的批量字段
           batchFields.forEach((field) => {
-            if (batch[field] !== undefined) {
+            if (batch[field] && batch[field] !== undefined) {
               if (field === 'pic' && batch[field]) {
                 this.$set(val, field, batch[field]);
               } else if (field != 'pic') {
@@ -1449,9 +1459,9 @@ export default {
           });
 
           // 设置默认字段
-          defaultFields.forEach((field) => {
-            this.$set(val, field, batch[field]);
-          });
+          // defaultFields.forEach((field) => {
+          //   this.$set(val, field, batch[field]);
+          // });
         }
       }
     },
