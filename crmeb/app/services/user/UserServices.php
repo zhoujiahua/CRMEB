@@ -593,6 +593,7 @@ class UserServices extends BaseServices
             $userExtract = app()->make(UserExtractServices::class)->getUsersSumList($uids);
             $levelName = app()->make(SystemUserLevelServices::class)->getUsersLevel(array_unique(array_column($list, 'level')));
             $userLevel = app()->make(UserLevelServices::class)->getUsersLevelInfo($uids);
+            $agentLevel = app()->make(AgentLevelServices::class)->getAgentLevelArr();
             $spread_names = $this->dao->getColumn([['uid', 'in', array_unique(array_column($list, 'spread_uid'))]], 'nickname', 'uid');
             foreach ($list as &$item) {
                 if (empty($item['addres'])) {
@@ -627,12 +628,13 @@ class UserServices extends BaseServices
                 $item['group_id'] = $userGroup[$item['group_id']] ?? '无';
                 //用户等级
                 $item['vip_name'] = false;
-                $levelinfo = $userLevel[$item['uid']] ?? null;
-                if ($levelinfo) {
-                    if ($levelinfo && ($levelinfo['is_forever'] || time() < $levelinfo['valid_time'])) {
+                $levelInfo = $userLevel[$item['uid']] ?? null;
+                if ($levelInfo) {
+                    if ($levelInfo && ($levelInfo['is_forever'] || time() < $levelInfo['valid_time'])) {
                         $item['vip_name'] = $item['level'] != '无' ? $item['level'] : false;
                     }
                 }
+                $item['agent_level_name'] = $agentLevel[$item['agent_level']] ?? '无';
                 $item['labels'] = $userlabel[$item['uid']] ?? '';
                 $item['isMember'] = $item['is_money_level'] > 0 ? 1 : 0;
                 if (strpos($item['avatar'], '/statics/system_images/') !== false) {

@@ -803,7 +803,7 @@ class PublicController
             $res = $pay->queryTransferBills($order_id);
             if (isset($res['fail_reason']) && $res['fail_reason'] != '') {
                 if ($type == 1) {
-                    $extractServices->refuse((int)$info['id'], '提现失败，原因：超时为领取');
+                    $extractServices->changeFail($info['id'], $info, '提现失败，原因：超时未领取');
                     $extractServices->update($info['id'], ['state' => 'FAIL']);
                 } else {
                     $lotteryRecordServices->update($info['id'], ['state' => 'FAIL']);

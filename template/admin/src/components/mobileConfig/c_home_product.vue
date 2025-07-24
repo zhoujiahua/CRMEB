@@ -445,6 +445,7 @@ export default {
       }
     },
     getConfig(data) {
+      console.log(data, 'data');
       let configObj = this.configObj.tabConfig.list[this.configObj.tabConfig.tabCur];
       let activeValue = configObj.selectConfig.activeValue;
       if (!data.name) {
@@ -453,7 +454,7 @@ export default {
       if (data.name == 'selectType' && data.values == 1) {
         return;
       }
-      console.log(configObj.tabVal,'configObj.tabVal')
+      console.log(configObj, 'configObj.tabVal');
       let type = configObj.tabVal;
       let dataObj = {
         page: 1,
@@ -464,8 +465,8 @@ export default {
       if (type == 1) {
         this.configObj.productList.list = [];
         return;
-      }else if (type == 3) {
-        this.configObj.productList.list = [];
+      } else if (type == 3) {
+        // this.configObj.productList.list = [];
         dataObj.cate_id = activeValue;
       } else {
         dataObj.store_label_id = configObj.goodsLabel.activeValue;
@@ -490,6 +491,6 @@ export default {
   }
 }
 .btn-box {
-	padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 </style>

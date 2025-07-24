@@ -502,7 +502,7 @@ if ($type == 'order') {
             $data['delivery_id'] = uniqid();
         }
         // 小程序订单管理
-        event('OrderShippingListener', ['product', $orderInfo, $type, $data['delivery_id'], $data['delivery_name']]);
+        event('OrderShippingListener', ['product', $orderInfo, $type, $data['delivery_id'], $data['delivery_code']]);
         //到期自动收货
         event('OrderDeliveryListener', [$orderInfo, $storeName, $data, $type]);
 

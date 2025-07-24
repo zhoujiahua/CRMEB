@@ -637,3 +637,14 @@ export function productBrokerageUpdate(id, type, data) {
     data,
   });
 }
+
+/**
+ * @description 评论批量审核
+ */
+export function replyBatchStatus(data) {
+  return request({
+    url: `product/reply/batch_set_status`,
+    method: 'post',
+    data,
+  });
+}

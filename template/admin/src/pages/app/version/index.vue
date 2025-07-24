@@ -24,11 +24,12 @@
             >
               <i class="el-icon-s-promotion" style="font-size: 16px; color: red"></i>
             </el-tooltip>
+            {{ scope.row.version }}
           </template>
         </el-table-column>
         <el-table-column label="平台类型" min-width="90">
           <template slot-scope="scope">
-            <div class="tabBox_img" v-viewer>
+            <div>
               <span>{{ scope.row.platform === 1 ? '安卓' : '苹果' }}</span>
             </div>
           </template>

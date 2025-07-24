@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-50">
     <el-form ref="formItem" :rules="ruleValidate" :model="formItem" label-width="100px" @submit.native.prevent>
       <el-form-item label="用户ID：" v-if="formItem.uid">
         <el-input
@@ -319,5 +319,8 @@ export default {
   color: #bbb;
   font-size: 12px;
   line-height: 12px;
+}
+.pb-50{
+  padding-bottom: 50px;
 }
 </style>

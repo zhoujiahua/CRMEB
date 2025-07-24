@@ -353,4 +353,31 @@ class StoreCategoryServices extends BaseServices
             return $this->dao->getALlByIndex($where, 'id, cate_name, pid, pic, big_pic, sort, is_show, add_time');
         }, 86400);
     }
+
+    /**
+     * @param string $cate_name_one
+     * @param string $cate_name_two
+     * @return array
+     * @author wuhaotian
+     * @email 442384644@qq.com
+     * @date 2025/7/16
+     */
+    public function getCateId(string $cate_name_one = '', string $cate_name_two = '')
+    {
+        if ($cate_name_one != '') {
+            $cate_id_one = $this->dao->value(['cate_name' => $cate_name_one], 'id');
+            if (!$cate_id_one) {
+                $cate_id_one = $this->dao->save(['cate_name' => $cate_name_one, 'add_time' => time()])['id'];
+            }
+            if ($cate_name_two != '') {
+                $cate_id_two = $this->dao->value(['cate_name' => $cate_name_two, 'pid' => $cate_id_one], 'id');
+                if (!$cate_id_two) {
+                    $cate_id_two = $this->dao->save(['cate_name' => $cate_name_two, 'pid' => $cate_id_one, 'add_time' => time()])['id'];
+                }
+                return [$cate_id_one, $cate_id_two];
+            }
+            return [$cate_id_one];
+        }
+        return [];
+    }
 }

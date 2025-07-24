@@ -244,7 +244,7 @@ export function switchH5Login() {
 // #endif
 
 /*
- * h5切换公众号登陆
+ * h5切换公众号登录
  * */
 // #ifdef H5
 export function switchH5Login() {

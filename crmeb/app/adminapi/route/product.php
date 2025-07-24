@@ -79,6 +79,10 @@ Route::group('product', function () {
         Route::get('product/:id', 'v1.product.StoreProduct/get_product_info')->option(['real_name' => '商品详情']);
         //加入回收站
         Route::delete('product/:id', 'v1.product.StoreProduct/delete')->option(['real_name' => '商品放入回收站']);
+        //加入回收站
+        Route::post('product/batch_delete', 'v1.product.StoreProduct/batchDelete')->option(['real_name' => '商品批量放入回收站']);
+        //批量从回收站恢复
+        Route::post('product/batch_recover', 'v1.product.StoreProduct/batchRecover')->option(['real_name' => '批量从回收站恢复']);
         //保存新建或保存
         Route::post('product/:id', 'v1.product.StoreProduct/save')->option(['real_name' => '新建或修改商品']);
         //生成属性
@@ -113,6 +117,8 @@ Route::group('product', function () {
         Route::post('reply/save_fictitious_reply', 'v1.product.StoreProductReply/save_fictitious_reply')->option(['real_name' => '保存虚拟评论']);
         //审核商品评论
         Route::put('reply/set_status/:id/:status', 'v1.product.StoreProductReply/set_status')->option(['real_name' => '审核商品评论']);
+        //批量审核商品评论
+        Route::post('reply/batch_set_status', 'v1.product.StoreProductReply/batch_set_status')->option(['real_name' => '批量审核商品评论']);
     })->option(['parent' => 'product', 'cate_name' => '商品评论']);
 
     /** 商品采集 */

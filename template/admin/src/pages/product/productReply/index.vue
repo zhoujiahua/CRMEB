@@ -66,7 +66,7 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" v-db-click @click="userSearchs">搜索</el-button>
+            <el-button type="primary" v-db-click @click="userSearchs">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -77,6 +77,9 @@
           <el-button v-auth="['product-reply-save_fictitious_reply']" type="primary" v-db-click @click="addRep"
             >添加自评</el-button
           >
+          <el-button v-auth="['product-reply-save_fictitious_reply']" v-db-click @click="openBatchModal"
+            >批量审核</el-button
+          >
         </el-col>
       </el-row>
       <el-table
@@ -85,8 +88,10 @@
         class="ivu-mt mt14"
         v-loading="loading"
         @on-sort-change="sortMethod"
+        @selection-change="handleSelectRow"
         empty-text="暂无数据"
       >
+        <el-table-column type="selection" width="60"> </el-table-column>
         <el-table-column label="评论ID" width="80">
           <template slot-scope="scope">
             <span>{{ scope.row.id }}</span>
@@ -233,12 +238,43 @@
         v-if="pictureModal"
       ></uploadPictures>
     </el-dialog>
+    <el-dialog
+      :visible.sync="batchModal"
+      class="batch-box"
+      title="审核批量设置"
+      :show-close="true"
+      :close-on-click-modal="false"
+      width="540px"
+    >
+      <el-form
+        ref="batchFormData"
+        :model="batchFormData"
+        label-width="90px"
+        label-position="right"
+        @submit.native.prevent
+      >
+        <el-row :gutter="24">
+          <el-col :span="24">
+            <el-form-item label="批量设置：" prop="status">
+              <el-radio-group v-model="batchFormData.status">
+                <el-radio :label="1">通过</el-radio>
+                <el-radio :label="2">拒绝</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button v-db-click @click="batchModal = false">取 消</el-button>
+        <el-button type="primary" v-db-click @click="batchSub">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { replyListApi, setReplyApi, fictitiousReply } from '@/api/product';
+import { replyListApi, setReplyApi, replyBatchStatus } from '@/api/product';
 import addReply from '../components/addReply.vue';
 import goodsList from '@/components/goodsList/index';
 import uploadPictures from '@/components/uploadPictures';
@@ -257,7 +293,11 @@ export default {
       replyModal: false,
       pictureModal: false,
       goodsModal: false,
+      batchModal: false,
       attrModal: false, // 选择商品规格
+      batchFormData: {
+        status: 1,
+      },
       grid: {
         xl: 7,
         lg: 10,
@@ -313,6 +353,7 @@ export default {
         content: [{ required: true, message: '请输入回复内容', trigger: 'blur' }],
       },
       rows: {},
+      ids: [],
     };
   },
   computed: {},
@@ -384,6 +425,37 @@ export default {
           return false;
         }
       });
+    },
+    handleSelectRow(selection) {
+      const ids = [];
+      for (let i = 0; i < selection.length; i++) {
+        const item = selection[i];
+        if (!ids.includes(item.id)) {
+          ids.push(item.id);
+        }
+      }
+      this.ids = ids;
+      console.log(this.ids);
+    },
+    openBatchModal() {
+      if (!this.ids.length) return this.$message.warning('请先选择评论');
+      this.batchModal = true;
+    },
+    batchSub() {
+      let delfromData = {
+        ids: this.ids,
+        status: this.batchFormData.status,
+      };
+      replyBatchStatus(delfromData)
+        .then((res) => {
+          this.$message.success(res.msg);
+          this.batchModal = false;
+          this.ids = [];
+          this.getList();
+        })
+        .catch((res) => {
+          this.$message.error(res.msg);
+        });
     },
     cancels() {
       this.modals = false;

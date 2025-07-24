@@ -187,7 +187,7 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="170">
               <template slot-scope="scope">
-                <a v-db-click @click="editPicList(scope.row)">删除</a>
+                <a v-db-click @click="editPicList(scope.row.att_id)">删除</a>
                 <el-divider direction="vertical"></el-divider>
                 <a v-db-click @click="scope.row.isEdit = !scope.row.isEdit">{{
                   scope.row.isEdit ? '确定' : '重命名'

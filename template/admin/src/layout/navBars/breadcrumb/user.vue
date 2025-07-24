@@ -29,10 +29,16 @@
         </transition>
       </el-tooltip>
     </div>
-    <div class="layout-navbars-breadcrumb-user-icon mr10" v-db-click @click="onScreenfullClick">
+    <div class="layout-navbars-breadcrumb-user-icon" v-db-click @click="onScreenfullClick">
       <i
         :title="isScreenfull ? $t('message.user.title6') : $t('message.user.title5')"
         :class="!isScreenfull ? 'el-icon-full-screen' : 'el-icon-crop'"
+      ></i>
+    </div>
+    <div class="layout-navbars-breadcrumb-user-icon mr10" v-db-click @click="openMobelPage">
+      <i
+        title="商城页面"
+        class="el-icon-mobile-phone"
       ></i>
     </div>
     <el-dropdown :show-timeout="70" @command="onDropdownCommand">
@@ -102,6 +108,10 @@ export default {
      */
     initIsDot(status) {
       this.isDot = status;
+    },
+    openMobelPage(){
+      // 获取域名
+      window.open(window.location.origin, '_blank')
     },
     /**
      * 打开新弹窗

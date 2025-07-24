@@ -53,7 +53,7 @@ export function getLogo() {
 
 /**
  * 小程序用户登录
- * @param data object 小程序用户登陆信息
+ * @param data object 小程序用户登录信息
  */
 export function login(data) {
 	return request.post("wechat/mp_auth", data, {
@@ -193,7 +193,7 @@ export function phoneLogin(data) {
 
 /**
  * 小程序用户登录
- * @param data object 小程序用户登陆信息
+ * @param data object 小程序用户登录信息
  */
 export function routineLogin(data) {
 	return request.get("v2/wechat/routine_auth", data, {

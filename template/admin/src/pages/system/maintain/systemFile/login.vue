@@ -77,7 +77,7 @@ export default {
               this.$message.success('登录成功!');
               //   this.$emit('on-Login', res.data);
               let expires = this.getExpiresTime(res.data.expires_time);
-              // 记录用户登陆信息
+              // 记录用户登录信息
               setCookies('file_token', res.data.token, expires);
               this.$router.push({
                 path: this.$routeProStr + '/system/maintain/system_file/opendir',

@@ -62,6 +62,8 @@ class PayTransferNotifyServices
                     'phone' => $user['phone'],
                     'success_time' => date('Y-m-d H:i:s')
                 ]]);
+            } else {
+                $userExtractServices->changeFail($userExtractInfo['id'], $userExtractInfo, '提现失败，原因：超时未领取');
             }
         } catch (\Exception $e) {
             return false;

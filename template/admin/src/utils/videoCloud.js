@@ -70,7 +70,7 @@ export default {
     if (pos !== -1) {
       suffix = Key.substring(pos);
     }
-    let filename = new Date().getTime() + suffix;
+    let filename = this.getVideoName(suffix);
     return new Promise((resolve, reject) => {
       cos.sliceUploadFile(
         {
@@ -110,7 +110,7 @@ export default {
     if (pos !== -1) {
       suffix = Key.substring(pos);
     }
-    let filename = new Date().getTime() + suffix;
+    let filename = this.getVideoName(suffix);
     let data = res.data;
     let XCosSecurityToken = data.credentials.sessionToken;
     let url = data.url + camSafeUrlEncode(filename).replace(/%2F/g, '/');
@@ -147,7 +147,7 @@ export default {
     if (pos !== -1) {
       suffix = file.substring(pos);
     }
-    let filename = new Date().getTime() + suffix;
+    let filename = this.getVideoName(suffix);
     let formData = new FormData();
     let data = res.data;
     // 注意formData里append添加的键的大小写
@@ -183,7 +183,7 @@ export default {
     if (pos !== -1) {
       suffix = Key.substring(pos);
     }
-    const filename = new Date().getTime() + suffix;
+    const filename = this.getVideoName(suffix);
     const formData = new FormData();
     const data = res.data;
     // 注意formData里append添加的键的大小写
@@ -217,7 +217,7 @@ export default {
     if (pos !== -1) {
       suffix = Key.substring(pos);
     }
-    const filename = new Date().getTime() + suffix;
+    const filename = this.getVideoName(suffix);
     const data = res.data;
 
     const auth = sign('PUT', data.accessid, data.secretKey, '', fileObject.type, '', data.storageName, filename);
@@ -249,7 +249,7 @@ export default {
     if (pos !== -1) {
       suffix = Key.substring(pos);
     }
-    const filename = new Date().getTime() + suffix;
+    const filename = this.getVideoName(suffix);
     const fileUrl = res.data.domain + '/' + filename;
     const config = {
       useCdnDomain: true,
@@ -306,5 +306,13 @@ export default {
     formData.append('file', fileObject);
     videoIng(true, 100);
     return upload(formData);
+  },
+  // 获取上传云存储视频名称
+  getVideoName(suffix) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const name = new Date().getTime();
+    return `attach/${year}/${month}/${name}` + suffix;
   },
 };

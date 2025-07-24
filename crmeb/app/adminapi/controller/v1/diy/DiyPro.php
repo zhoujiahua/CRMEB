@@ -73,7 +73,7 @@ class DiyPro extends AuthController
                             }
                             $tabValue['goodsList']['ids'] = array_column($tabValue['goodsList']['list'], 'id');
                         }
-                        unset($tabValue['goodsList']['list'], $item['productList']['list']);
+                        unset($tabValue['goodsList']['list'], $tabValue['productList']['list']);
                     }
                     $item['tabConfig']['list'] = $list;
                 }

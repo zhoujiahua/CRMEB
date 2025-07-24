@@ -96,7 +96,7 @@ class SystemCrontabServices extends BaseServices
         }
         if (!$res) throw new AdminException(100006);
         Cache::delete('crontabCache');
-        Cache::set('crontabCache', $this->dao->selectList([])->toArray());
+        Cache::set('crontabCache', $this->dao->selectList(['is_open' => 1, 'is_del' => 0])->toArray());
         return true;
     }
 
@@ -116,7 +116,7 @@ class SystemCrontabServices extends BaseServices
         $res = $this->dao->update(['id' => $id], $data);
         if (!$res) throw new AdminException(100008);
         Cache::delete('crontabCache');
-        Cache::set('crontabCache', $this->dao->selectList([])->toArray());
+        Cache::set('crontabCache', $this->dao->selectList(['is_open' => 1, 'is_del' => 0])->toArray());
         return true;
     }
 
@@ -137,7 +137,7 @@ class SystemCrontabServices extends BaseServices
         $res = $this->dao->update(['id' => $id], $data);
         if (!$res) throw new AdminException(100014);
         Cache::delete('crontabCache');
-        Cache::set('crontabCache', $this->dao->selectList([])->toArray());
+        Cache::set('crontabCache', $this->dao->selectList(['is_open' => 1, 'is_del' => 0])->toArray());
         return true;
     }
 
@@ -225,7 +225,11 @@ class SystemCrontabServices extends BaseServices
                 //转化小驼峰方法名
                 $functionName = Str::camel($item['mark']);
                 //执行定时任务
-                $crontabRunServices->$functionName();
+                if (strpos($functionName, 'customTimer') === 0) {
+                    $crontabRunServices->customTimer(json_decode($item['customCode']));
+                } else {
+                    $crontabRunServices->$functionName();
+                }
                 //写入本次执行时间和下次执行时间
                 $this->dao->update(['mark' => $item['mark']], ['last_execution_time' => $time, 'next_execution_time' => $this->getTimerCycleTime($item)]);
             }
@@ -253,7 +257,7 @@ class SystemCrontabServices extends BaseServices
             // 从缓存中获取定时任务列表
             $list = Cache::get('crontabCache');
             if (!$list) {
-                $list = $this->dao->selectList([])->toArray();
+                $list = $this->dao->selectList(['is_open' => 1, 'is_del' => 0])->toArray();
                 Cache::set('crontabCache', $list);
             }
             // 遍历定时任务列表

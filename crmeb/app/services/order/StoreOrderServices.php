@@ -632,6 +632,13 @@ HTML;
             if ($item['clerk_id'] == 0 && !isset($item['clerk_name'])) {
                 $item['clerk_name'] = '总平台';
             }
+
+            if ($item['store_id']) {
+                $store = app()->make(SystemStoreServices::class);
+                $storeOne = $store->value(['id' => $item['store_id']], 'name');
+                if ($storeOne) $item['store_name'] = $storeOne;
+            }
+
             //根据核销员更改store_name
             if ($item['clerk_id'] && isset($item['staff_store_id']) && $item['staff_store_id']) {
                 /** @var SystemStoreServices $store */
@@ -2009,7 +2016,7 @@ HTML;
     {
         //订单商品全部评价完成
         $replyServices->count(['unique' => $uniqueList, 'oid' => $oid]);
-        if ($replyServices->count(['unique' => $uniqueList, 'oid' => $oid]) == count($uniqueList)) {
+        if ($replyServices->count(['unique' => $uniqueList, 'oid' => $oid]) >= count($uniqueList)) {
             $res = $this->dao->update(['id' => $oid, 'status' => 2], ['status' => 3]);
             if (!$res) throw new ApiException(100007);
             /** @var StoreOrderStatusServices $statusService */

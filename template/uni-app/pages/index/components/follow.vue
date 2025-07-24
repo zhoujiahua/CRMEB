@@ -13,9 +13,6 @@
         </view>
         <view :style="[buttonStyle]" class="notes acea-row row-center-wrapper" @click="followTap">
           {{ $t(`关注`) }}
-          <!-- #ifdef MP -->
-          <official-account class="official-account"></official-account>
-          <!-- #endif -->
         </view>
         <view class="iconfont icon-ic_close"></view>
       </view>
@@ -193,9 +190,7 @@ export default {
       // #endif
     },
     followTap() {
-		// #ifndef MP-WEIXIN
 		this.followCode = true;
-		// #endif
     },
     closeFollowCode() {
       this.followCode = false
@@ -304,7 +299,6 @@ export default {
       left: 50%;
       width: 60rpx;
       height: 60rpx;
-      border: 2rpx solid #CCCCCC;
       border-radius: 50%;
       transform: translateX(-50%);
 

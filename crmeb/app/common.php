@@ -936,6 +936,10 @@ if (!function_exists('get_thumb_water')) {
      */
     function get_thumb_water($list, string $type = 'small', array $field = ['image'], bool $is_remote_down = false)
     {
+        // 未开启缩略图功能 直接返回原数据
+        if (!sys_config('image_thumb_status', 0)) {
+            return $list;
+        }
         if (!$list || !$field) return $list;
         $baseType = $type;
         $data = $list;

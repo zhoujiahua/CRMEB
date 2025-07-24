@@ -122,7 +122,7 @@ class DiyProServices extends BaseServices
                                         }
                                         $where['is_show'] = 1;
                                         $where['is_del'] = 0;
-                                        $tabValue['productList']['list'] = $productServices->getSearchList($where, 0, $num, ['id,store_name,cate_id,image,IFNULL(sales, 0) + IFNULL(ficti, 0) as sales,price,stock,activity,ot_price,spec_type,recommend_image,unit_name,is_vip,vip_price']);
+                                        $tabValue['goodsList']['list'] = $productServices->getSearchList($where, 0, $num, ['id,store_name,cate_id,image,IFNULL(sales, 0) + IFNULL(ficti, 0) as sales,price,stock,activity,ot_price,spec_type,recommend_image,unit_name,is_vip,vip_price']);
                                     }
                                 }
                                 $item['tabConfig']['list'] = $list;

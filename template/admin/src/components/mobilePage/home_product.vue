@@ -569,7 +569,7 @@ export default {
         } else if (goods.goodsList.list) {
           this.list = goods.productList.list.length ? goods.productList.list : 2;
         } else {
-          this.list = 2;
+          this.list = goods.productList.list.length ? goods.productList.list : 2;
         }
       }
     },

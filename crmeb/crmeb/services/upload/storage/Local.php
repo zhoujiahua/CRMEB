@@ -125,7 +125,7 @@ class Local extends BaseUpload
             if (!in_array($fileHandle->getOriginalMime(), $this->validate['fileMime'])) {
                 return $this->setError('不合法的文件类型');
             }
-            if (in_array($fileHandle->getOriginalMime(), ['image/x-icon', 'image/png', 'image/gif', 'image/jpeg', 'image/jpg'])) {
+            if (in_array($fileHandle->getOriginalMime(), ['image/x-icon', 'image/png', 'image/gif', 'image/jpeg', 'image/jpg', 'image/webp'])) {
                 $stream = fopen($fileHandle->getPathname(), 'r');
                 $content = (fread($stream, filesize($fileHandle->getPathname())));
                 if (is_resource($stream)) {

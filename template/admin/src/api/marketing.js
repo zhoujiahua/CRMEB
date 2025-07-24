@@ -946,3 +946,13 @@ export function getNewbie(data) {
     method: 'get',
   });
 }
+
+/**
+ * 拼团立即成团
+ */
+export function combineJoinApi(id) {
+  return request({
+    url: 'marketing/combination/immediately/' + id,
+    method: 'get',
+  });
+}

@@ -65,6 +65,7 @@
                             placeholder="请输入规格值"
                             v-model="item.detail.attrsVal"
                             @keyup.enter.native="createAttr(item.detail.attrsVal, index)"
+                            @blur="createAttr(item.detail.attrsVal, index)"
                             maxlength="30"
                             show-word-limit
                           >

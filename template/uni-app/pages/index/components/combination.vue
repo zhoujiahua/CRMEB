@@ -9,7 +9,7 @@
 						<text class="fs-32 lh-44rpx fw-500" :style="[titleStyle]" v-if="titleConfig">{{ titleTxtConfig }}</text>
 						<image :src="titleImg" class="w-140 h-32" v-else></image>
 						<text class="fs-28 text--w111-ccc px-20" :style="[dividerColor]">|</text>
-						<view class="avatar-group flex-y-center mr-20" v-if="pinkInfo.avatars.length">
+						<view class="avatar-group flex-y-center mr-20" v-if="pinkInfo.avatars && pinkInfo.avatars.length">
 							<image v-for="(item, index) in pinkInfo.avatars" :key="index" :src="item" mode="" class="w-36 h-36 rd-50-p111-"></image>
 						</view>
 						<text class="fs-26 text--w111-999 lh-36rpx" :style="[tipsColor]">{{ pinkInfo.pink_count }}{{ $t(`人参与拼团`) }}</text>

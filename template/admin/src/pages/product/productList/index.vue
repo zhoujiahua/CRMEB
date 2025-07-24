@@ -3,115 +3,148 @@
     <el-card :bordered="false" shadow="never" class="ivu-mt" :body-style="{ padding: 0 }">
       <div class="padding-add">
         <el-form ref="artFrom" :model="artFrom" label-width="80px" label-position="right" inline @submit.native.prevent>
-          <el-form-item label="商品搜索：" label-for="store_name">
-            <el-input
-              clearable
-              placeholder="请输入商品名称/关键字/ID"
-              v-model="artFrom.store_name"
-              class="form_content_width"
-            />
-          </el-form-item>
-          <el-form-item label="商品类型：">
-            <el-select v-model="artFrom.virtual_type" clearable placeholder="全部" class="form_content_width">
-              <el-option label="全部" value="" />
-              <el-option label="普通商品" value="0" />
-              <el-option label="卡密商品" value="1" />
-              <el-option label="优惠券商品" value="2" />
-              <el-option label="虚拟商品" value="3" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="商品分类：" label-for="pid">
-            <el-cascader
-              v-model="artFrom.cate_id"
-              size="small"
-              :options="treeSelect"
-              :props="{ multiple: false, emitPath: false, checkStrictly: true }"
-              clearable
-              class="form_content_width"
-            ></el-cascader>
-          </el-form-item>
-          <el-form-item label="商品标签：" label-for="store_name">
-            <div class="labelInput acea-row row-between-wrapper form_content_width" @click="openStoreLabel">
-              <div style="width: 90%">
-                <div v-if="storeLabelList.length">
-                  <el-tag
-                    class="mr5"
-                    closable
-                    v-for="(item, index) in storeLabelList"
-                    :key="index"
-                    @close="closeStoreLabel(item)"
-                    >{{ item.label_name }}</el-tag
-                  >
-                </div>
-                <span class="span" v-else>选择商品标签</span>
-              </div>
-              <div class="iconfont iconxiayi"></div>
-            </div>
-          </el-form-item>
-          <el-form-item label="商品规格：">
-            <el-select v-model="artFrom.spec_type" clearable placeholder="全部" class="form_content_width">
-              <el-option label="全部" value="" />
-              <el-option label="单规格" value="0" />
-              <el-option label="多规格" value="1" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="配送方式：">
-            <el-select v-model="artFrom.logistics" clearable placeholder="全部" class="form_content_width">
-              <el-option label="全部" value="" />
-              <el-option label="快递配送" value="1" />
-              <el-option label="到店自提" value="2" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="会员专属：">
-            <el-select v-model="artFrom.vip_product" clearable placeholder="全部" class="form_content_width">
-              <el-option label="全部" value="" />
-              <el-option label="否" value="0" />
-              <el-option label="是" value="1" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="是否礼物：">
-            <el-select v-model="artFrom.is_gift" clearable placeholder="全部" class="form_content_width">
-              <el-option label="全部" value="" />
-              <el-option label="否" value="0" />
-              <el-option label="是" value="1" />
-            </el-select>
-          </el-form-item>
+          <div class="acea-row search-form">
+            <div class="search-form-box">
+              <el-form-item label="商品搜索：" label-for="store_name">
+                <el-input
+                  clearable
+                  placeholder="请输入商品名称/关键字/ID"
+                  v-model="artFrom.store_name"
+                  class="form_content_width"
+                />
+              </el-form-item>
+              <el-form-item label="商品类型：">
+                <el-select v-model="artFrom.virtual_type" clearable placeholder="全部" class="form_content_width">
+                  <el-option label="全部" value="" />
+                  <el-option label="普通商品" value="0" />
+                  <el-option label="卡密商品" value="1" />
+                  <el-option label="优惠券商品" value="2" />
+                  <el-option label="虚拟商品" value="3" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="商品分类：" label-for="pid">
+                <el-cascader
+                  v-model="artFrom.cate_id"
+                  size="small"
+                  :options="treeSelect"
+                  :props="{ multiple: false, emitPath: false, checkStrictly: true }"
+                  clearable
+                  class="form_content_width"
+                ></el-cascader>
+              </el-form-item>
+              <el-form-item label="配送方式：">
+                <el-select v-model="artFrom.logistics" clearable placeholder="全部" class="form_content_width">
+                  <el-option label="全部" value="" />
+                  <el-option label="快递配送" value="1" />
+                  <el-option label="到店自提" value="2" />
+                </el-select>
+              </el-form-item>
+              <template v-if="collapse">
+                <el-form-item label="商品标签：" label-for="store_name">
+                  <div class="labelInput acea-row row-between-wrapper form_content_width" @click="openStoreLabel">
+                    <div style="width: 90%">
+                      <div v-if="storeLabelList.length">
+                        <el-tag
+                          class="mr5"
+                          closable
+                          v-for="(item, index) in storeLabelList"
+                          :key="index"
+                          @close="closeStoreLabel(item)"
+                          >{{ item.label_name }}</el-tag
+                        >
+                      </div>
+                      <span class="span" v-else>选择商品标签</span>
+                    </div>
+                    <div class="iconfont iconxiayi"></div>
+                  </div>
+                </el-form-item>
+                <el-form-item label="商品规格：">
+                  <el-select v-model="artFrom.spec_type" clearable placeholder="全部" class="form_content_width">
+                    <el-option label="全部" value="" />
+                    <el-option label="单规格" value="0" />
+                    <el-option label="多规格" value="1" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="会员专属：">
+                  <el-select v-model="artFrom.vip_product" clearable placeholder="全部" class="form_content_width">
+                    <el-option label="全部" value="" />
+                    <el-option label="否" value="0" />
+                    <el-option label="是" value="1" />
+                  </el-select>
+                </el-form-item>
 
-          <el-form-item label="添加时间：">
-            <el-date-picker
-              class="form_range_content_width"
-              clearable
-              v-model="timeVal"
-              type="daterange"
-              :editable="false"
-              @change="onchangeTime"
-              format="yyyy/MM/dd"
-              value-format="yyyy/MM/dd"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :picker-options="pickerOptions"
-              style="width: 250px"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="库存：" label-for="store_name">
-            <el-input clearable placeholder="最小值" v-model="artFrom.stock_s[0]" class="form_range_content_width" />
-            ~
-            <el-input clearable placeholder="最大值" v-model="artFrom.stock_s[1]" class="form_range_content_width" />
-          </el-form-item>
-          <el-form-item label="价格：" label-for="store_name">
-            <el-input clearable placeholder="最小值" v-model="artFrom.price_s[0]" class="form_range_content_width" />
-            ~
-            <el-input clearable placeholder="最大值" v-model="artFrom.price_s[1]" class="form_range_content_width" />
-          </el-form-item>
-          <el-form-item label="销量：" label-for="store_name">
-            <el-input clearable placeholder="最小值" v-model="artFrom.sales_s[0]" class="form_range_content_width" />
-            ~
-            <el-input clearable placeholder="最大值" v-model="artFrom.sales_s[1]" class="form_range_content_width" />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" v-db-click @click="userSearchs">查询</el-button>
-            <el-button class="ResetSearch" v-db-click @click="reset">重置</el-button>
-          </el-form-item>
+                <el-form-item label="添加时间：">
+                  <el-date-picker
+                    class="form_range_content_width"
+                    clearable
+                    v-model="timeVal"
+                    type="daterange"
+                    :editable="false"
+                    @change="onchangeTime"
+                    format="yyyy/MM/dd"
+                    value-format="yyyy/MM/dd"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :picker-options="pickerOptions"
+                    style="width: 250px"
+                  ></el-date-picker>
+                </el-form-item>
+                <el-form-item label="库存：" label-for="store_name">
+                  <el-input
+                    clearable
+                    placeholder="最小值"
+                    v-model="artFrom.stock_s[0]"
+                    class="form_range_content_width"
+                  />
+                  ~
+                  <el-input
+                    clearable
+                    placeholder="最大值"
+                    v-model="artFrom.stock_s[1]"
+                    class="form_range_content_width"
+                  />
+                </el-form-item>
+                <el-form-item label="价格：" label-for="store_name">
+                  <el-input
+                    clearable
+                    placeholder="最小值"
+                    v-model="artFrom.price_s[0]"
+                    class="form_range_content_width"
+                  />
+                  ~
+                  <el-input
+                    clearable
+                    placeholder="最大值"
+                    v-model="artFrom.price_s[1]"
+                    class="form_range_content_width"
+                  />
+                </el-form-item>
+                <el-form-item label="销量：" label-for="store_name">
+                  <el-input
+                    clearable
+                    placeholder="最小值"
+                    v-model="artFrom.sales_s[0]"
+                    class="form_range_content_width"
+                  />
+                  ~
+                  <el-input
+                    clearable
+                    placeholder="最大值"
+                    v-model="artFrom.sales_s[1]"
+                    class="form_range_content_width"
+                  />
+                </el-form-item>
+              </template>
+            </div>
+            <div class="search-form-sub">
+              <el-button type="primary" v-db-click @click="userSearchs">查询</el-button>
+              <el-button class="ResetSearch" v-db-click @click="reset">重置</el-button>
+              <a class="ivu-ml-8 font12 ml10" v-db-click @click="collapse = !collapse">
+                <template v-if="!collapse"> 展开 <i class="el-icon-arrow-down" /> </template>
+                <template v-else> 收起 <i class="el-icon-arrow-up" /> </template>
+              </a>
+            </div>
+          </div>
         </el-form>
       </div>
     </el-card>
@@ -145,6 +178,13 @@
             >
             <el-dropdown-item v-auth="['product-product-product_show']" v-if="artFrom.type === '2'" :command="8"
               >批量上架</el-dropdown-item
+            >
+            <el-dropdown-item v-auth="['product-product-product_show']" :command="9">设置商品标签</el-dropdown-item>
+            <el-dropdown-item v-auth="['product-product-product_show']" v-if="artFrom.type !== '6'" :command="11"
+              >移到回收站</el-dropdown-item
+            >
+            <el-dropdown-item v-auth="['product-product-product_show']" v-if="artFrom.type == '6'" :command="12"
+              >恢复商品</el-dropdown-item
             >
           </el-dropdown-menu>
         </el-dropdown>
@@ -455,6 +495,21 @@
         <el-button type="primary" v-db-click @click="batchSub">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 商品标签 -->
+    <el-dialog
+      :visible.sync="tagShow"
+      title="请选择商品标签"
+      :show-close="true"
+      width="540px"
+      :close-on-click-modal="false"
+    >
+      <goodsLabel
+        ref="goodsLabel"
+        :defaultLabelList="goodsLabelList"
+        @activeLabel="activeGoodsLabel"
+        @close="labelClose"
+      ></goodsLabel>
+    </el-dialog>
     <!-- 用户标签 -->
     <el-dialog
       :visible.sync="labelShow"
@@ -518,9 +573,12 @@ import {
   storeProductApi,
   batchSetting,
   productGetTemplateApi,
+  productLabelUseListApi,
+  productBatchDelete,
 } from '@/api/product';
 import userLabel from '@/components/labelList';
 import storeLabelList from '@/components/storeLabelList';
+import goodsLabel from '@/components/goodsLabel';
 
 export default {
   name: 'product_productList',
@@ -535,6 +593,7 @@ export default {
     brokerageSet,
     vipPriceSet,
     storeLabelList,
+    goodsLabel,
   },
   computed: {
     ...mapState('userLevel', ['categoryId']),
@@ -603,9 +662,12 @@ export default {
       showBrokerage: false,
       showVipPrice: false,
       storeLabelShow: false,
+      tagShow: false,
       productId: 0,
       storeLabelList: [],
+      goodsLabelList: [],
       timeVal: [],
+      collapse: false,
     };
   },
   watch: {
@@ -619,6 +681,7 @@ export default {
   activated() {
     this.goodHeade();
     this.goodsCategory();
+    this.getLabelList();
     if (this.$route.fullPath === this.$routeProStr + '/product/product_list?type=5') {
       this.getPath();
     } else {
@@ -636,6 +699,22 @@ export default {
     // 标签弹窗关闭
     storeLabelClose() {
       this.storeLabelShow = false;
+    },
+    getLabelList() {
+      productLabelUseListApi()
+        .then((res) => {
+          res.data.map((el) => {
+            if (el.list && el.list.length) {
+              el.list.map((label) => {
+                label.active = false;
+              });
+            }
+          });
+          this.goodsLabelList = res.data;
+        })
+        .catch((res) => {
+          this.$message.error(res.msg);
+        });
     },
     openStoreLabel(row) {
       this.storeLabelShow = true;
@@ -717,6 +796,8 @@ export default {
           label_id: [],
           coupon_ids: [],
           recommend: [],
+          is_gift: null,
+          label_list: [],
         };
         this.dataLabel = [];
       }
@@ -731,11 +812,39 @@ export default {
         this.onDismount();
       } else if (type === 8) {
         this.onShelves();
+      } else if (type === 9) {
+        this.batchType = type;
+        this.tagShow = true;
+      } else if (type === 11) {
+        this.batchGoodsSetting('全部移到回收站', 1);
+      } else if (type === 12) {
+        this.batchGoodsSetting('恢复选中商品', 2);
       } else {
         this.batchType = type;
         this.batchModal = true;
         this.productGetTemplate();
       }
+    },
+    batchGoodsSetting(tit, type) {
+      let url = type == 1 ? 'product/product/batch_delete' : 'product/product/batch_recover';
+      let delfromData = {
+        title: tit,
+        url,
+        method: 'post',
+        ids: {
+          ids: this.ids,
+        },
+        un: 1,
+      };
+      this.$modalSure(delfromData)
+        .then((res) => {
+          this.$message.success(res.msg);
+          this.goodHeade();
+          this.getDataList();
+        })
+        .catch((res) => {
+          this.$message.error(res.msg);
+        });
     },
     goodsMove(type) {
       if (type === 1) {
@@ -771,6 +880,14 @@ export default {
     // 标签弹窗关闭
     labelClose() {
       this.labelShow = false;
+      this.tagShow = false;
+    },
+    // 选择商品标签
+    activeGoodsLabel(data) {
+      console.log(data, 'data');
+      this.tagShow = false;
+      this.batchFormData.label_list = Array.from(new Set(data));
+      this.batchSub();
     },
     look(row) {
       this.goodsId = row.id;
@@ -1212,5 +1329,18 @@ export default {
 }
 .label_width {
   width: 400px;
+}
+.search-form {
+  display: flex;
+  justify-content: space-between;
+  .search-form-box {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .search-form-sub {
+    display: flex;
+    align-items: baseline;
+  }
 }
 </style>

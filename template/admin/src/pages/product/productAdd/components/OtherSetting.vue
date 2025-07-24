@@ -215,5 +215,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '../productAdd.scss';
+@use '../productAdd.scss' as *;
 </style>

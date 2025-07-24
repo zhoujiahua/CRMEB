@@ -9,9 +9,8 @@ use think\facade\App;
 
 class StoreProductLabel extends AuthController
 {
-
-    private StoreProductLabelCateServices $labelCateServices;
-    private StoreProductLabelServices $labelServices;
+    protected $labelCateServices;
+    protected $labelServices;
 
     public function __construct(App $app, StoreProductLabelCateServices $labelCateServices, StoreProductLabelServices $labelServices)
     {

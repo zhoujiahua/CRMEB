@@ -291,6 +291,31 @@ class StoreProduct extends AuthController
     }
 
     /**
+     * 批量移动到回收站
+     * @return \think\Response
+     */
+    public function batchDelete()
+    {
+        [$ids] = $this->request->postMore([
+            ['ids', []],
+        ], true);
+        return app('json')->success($this->service->batchDelete($ids));
+    }
+
+    /**
+     * 批量从回收站恢复
+     * @return \think\Response
+     */
+    public function batchRecover()
+    {
+        [$ids] = $this->request->postMore([
+            ['ids', []],
+        ], true);
+        $this->service->batchRecover($ids);
+        return app('json')->success('恢复成功');
+    }
+
+    /**
      * 生成规格列表
      * @param int $id
      * @param int $type
@@ -439,8 +464,11 @@ class StoreProduct extends AuthController
             ['give_integral', 0],
             ['coupon_ids', []],
             ['label_id', []],
+            ['label_list', []],
             ['recommend', []],
-            ['type', 0]
+            ['type', 0],
+            ['is_gift', 0],
+            ['gift_price', 0],
         ]);
         $this->service->batchSetting($data);
         return app('json')->success(100014);

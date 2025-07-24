@@ -89,6 +89,9 @@ Route::group('marketing', function () {
         Route::get('combination/statistics/list/:id', 'v1.marketing.StoreCombination/combinationStatisticsList')->option(['real_name' => '拼团统计列表']);
         //拼团订单
         Route::get('combination/statistics/order/:id', 'v1.marketing.StoreCombination/combinationStatisticsOrder')->option(['real_name' => '拼团统计订单']);
+        //立即成团
+        Route::get('combination/immediately/:id', 'v1.marketing.StoreCombination/immediatelyCombination')->option(['real_name' => '立即成团']);
+
     })->option(['parent' => 'marketing', 'cate_name' => '拼团活动']);
 
     /** 秒杀活动 */

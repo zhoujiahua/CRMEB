@@ -257,10 +257,9 @@ export default {
 		braginSuccess() {
 			let styleObject = {};
 			if (this.dataConfig.toneConfig.tabVal) {
-				styleObject['background'] = `linear-gradient(90deg,${this.dataConfig.joinBgColor.color[0].item} 0%,${this.dataConfig.joinBgColor.color[1].item} 100%)`;
 				styleObject['color'] = this.dataConfig.joinNumColor.color[0].item;
 			}else{
-				styleObject['color'] = '#fff';
+				styleObject['color'] = 'var(--view-theme)';
 			}
 			return styleObject;
 		},

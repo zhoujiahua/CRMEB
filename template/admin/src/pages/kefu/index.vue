@@ -176,7 +176,7 @@ export default {
       })
         .then(async (res) => {
           let expires = this.getExpiresTime(res.data.exp_time);
-          // 记录用户登陆信息
+          // 记录用户登录信息
           setCookies('kefu_uuid', res.data.kefuInfo.uid, expires);
           setCookies('kefu_token', res.data.token, expires);
           setCookies('kefu_expires_time', res.data.exp_time, expires);
@@ -264,7 +264,7 @@ export default {
           if (res.data.status == 3) {
             window.clearInterval(this.scanTime);
             let expires = this.getExpiresTime(res.data.exp_time);
-            // 记录用户登陆信息
+            // 记录用户登录信息
             setCookies('kefu_uuid', res.data.kefuInfo.uid, expires);
             setCookies('kefu_token', res.data.token, expires);
             setCookies('kefu_expires_time', res.data.exp_time, expires);

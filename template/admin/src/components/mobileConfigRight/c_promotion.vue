@@ -271,6 +271,7 @@ export default {
       brandData: [],
       treeSelect: [],
       tabIndex: 1,
+      selectIds: [],
     };
   },
   mounted() {
@@ -286,6 +287,7 @@ export default {
         this.defaults = nVal;
         this.configData = nVal[this.configNme];
         this.tabIndex = nVal.styleConfig.tabVal;
+        // this.selectIds = nVal[this.configNme].goodsList.ids || [];
       },
       deep: true,
     },

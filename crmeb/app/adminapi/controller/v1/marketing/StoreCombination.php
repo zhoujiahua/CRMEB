@@ -249,4 +249,23 @@ class StoreCombination extends AuthController
         ]);
         return app('json')->success($this->services->combinationStatisticsOrder($id, $where));
     }
+
+    /**
+     * 立即成团
+     * @param $id
+     * @return \think\Response
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @author wuhaotian
+     * @email 442384644@qq.com
+     * @date 2025/6/18
+     */
+    public function immediatelyCombination($id)
+    {
+        /** @var StorePinkServices $storePinkServices */
+        $storePinkServices = app()->make(StorePinkServices::class);
+        $storePinkServices->virtualCombination($id, 'admin');
+        return app('json')->success('成团成功');
+    }
 }

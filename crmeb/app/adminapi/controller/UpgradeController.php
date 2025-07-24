@@ -734,8 +734,8 @@ class UpgradeController
      */
     public function upData()
     {
-        $data['new_version'] = 'CRMEB-BZ v5.6.1';
-        $data['new_code'] = 561;
+        $data['new_version'] = 'CRMEB-BZ v5.6.3';
+        $data['new_code'] = 563;
         $data['update_sql'] = [
             [
                 'code' => 560,
@@ -2354,6 +2354,61 @@ SQL
                 'type' => -1,
                 'table' => "system_config_tab",
                 'sql' => "UPDATE `@table` SET `title` = '自定义JS' WHERE `eng_title` = 'statistics_config';"
+            ],[
+                'code' => 562,
+                'type' => 6,
+                'table' => "system_config",
+                'whereTable' => "system_config_tab",
+                'findSql' => "select id from @table where `menu_name` = 'merchant_cert_path'",
+                'whereSql' => "SELECT id as tabId FROM `@whereTable` WHERE `eng_title`='ali_pay'",
+                'sql' => "INSERT INTO `@table` VALUES (null, 'merchant_cert_path', 'upload', 'input', @tabId, '', 3, '', 0, 0, '\"\"', '应用公钥证书', '支付宝接口加签完成之后下载的应用公钥证书', 0, 1, 1, 489, 1);"
+            ],[
+                'code' => 562,
+                'type' => 6,
+                'table' => "system_config",
+                'whereTable' => "system_config_tab",
+                'findSql' => "select id from @table where `menu_name` = 'alipay_cert_path'",
+                'whereSql' => "SELECT id as tabId FROM `@whereTable` WHERE `eng_title`='ali_pay'",
+                'sql' => "INSERT INTO `@table` VALUES (null, 'alipay_cert_path', 'upload', 'input', @tabId, '', 3, '', 0, 0, '\"\"', '支付宝公钥证书', '支付宝接口加签完成下载的支付宝公钥证书', 0, 1, 1, 489, 1);"
+            ],[
+                'code' => 562,
+                'type' => 6,
+                'table' => "system_config",
+                'whereTable' => "system_config_tab",
+                'findSql' => "select id from @table where `menu_name` = 'alipay_root_cert_path'",
+                'whereSql' => "SELECT id as tabId FROM `@whereTable` WHERE `eng_title`='ali_pay'",
+                'sql' => "INSERT INTO `@table` VALUES (null, 'alipay_root_cert_path', 'upload', 'input', @tabId, '', 3, '', 0, 0, '\"\"', '支付宝根证书', '支付宝接口加签完成下载的支付宝根证书', 0, 1, 1, 489, 1);"
+            ],[
+                'code' => 562,
+                'type' => 6,
+                'table' => "system_config",
+                'whereTable' => "system_config_tab",
+                'findSql' => "select id from @table where `menu_name` = 'alipay_sign_type'",
+                'whereSql' => "SELECT id as tabId FROM `@whereTable` WHERE `eng_title`='ali_pay'",
+                'sql' => "INSERT INTO `@table` VALUES (null, 'alipay_sign_type', 'radio', 'input', @tabId, '0=>密钥\n1=>证书', 1, '', 0, 0, '0', '接口加签类型', '接口加签类型：密钥或证书', 80, 1, 0, 0, 0);"
+            ],[
+                'code' => 562,
+                'type' => -1,
+                'table' => "system_config",
+                'sql' => "UPDATE `@table` SET `level` = 1, `link_id` = 489, `link_value` = 0 WHERE `menu_name` = 'alipay_public_key';"
+            ],[
+                'code' => 562,
+                'type' => -1,
+                'table' => "system_config",
+                'sql' => "UPDATE `@table` SET `sort` = 85 WHERE `menu_name` = 'alipay_merchant_private_key';"
+            ],[
+                'code' => 562,
+                'type' => -1,
+                'table' => "system_config",
+                'sql' => "UPDATE `@table` SET `sort` = 91 WHERE `menu_name` = 'ali_pay_appid';"
+            ],[
+                'code' => 562,
+                'type' => 6,
+                'table' => "system_config",
+                'whereTable' => "system_config_tab",
+                'findSql' => "select id from @table where `menu_name` = 'image_thumb_status'",
+                'whereSql' => "SELECT id as tabId FROM `@whereTable` WHERE `eng_title`='base_config'",
+                'sql' => "INSERT INTO `@table` VALUES (null, 'image_thumb_status', 'radio', 'input', @tabId, '1=>开启\n0=>关闭', 1, '', 0, 0, '0', '缩略图开关', '是否开启缩略图', 0, 1, 0, 0, 0);"
             ],
         ];
         return $data;

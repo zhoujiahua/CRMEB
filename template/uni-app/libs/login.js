@@ -66,8 +66,10 @@ function _toLogin(push, pathLogin) {
 	// #endif
 	const BASIC_CONFIG = Cache.get('BASIC_CONFIG')
 	if (!pathLogin)
-		pathLogin = '/page/users/login/index'
-	Cache.set('login_back_url', path);
+		pathLogin = '/pages/users/login/index'
+	if (path !== pathLogin) {
+		Cache.set('login_back_url', path);
+	}
 	// #ifdef H5
 	if (isWeixin() && BASIC_CONFIG.wechat_status) {
 		uni.navigateTo({

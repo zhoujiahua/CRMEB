@@ -122,7 +122,7 @@ class StoreProductDao extends BaseDao
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getSearchList(array $where, int $page = 0, int $limit = 0, array $field = ['*'], array $with = ['attrs', 'couponId', 'description'])
+    public function getSearchList(array $where, int $page = 0, int $limit = 0, array $field = ['*'], array $with = [])
     {
         if (isset($where['star'])) $with[] = 'star';
         return $this->search($where, false)->with($with)->when($page != 0 && $limit != 0, function ($query) use ($page, $limit) {

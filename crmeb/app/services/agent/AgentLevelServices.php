@@ -396,4 +396,16 @@ class AgentLevelServices extends BaseServices
         // 返回true表示设置成功
         return true;
     }
+
+    /**
+     * 获取分销等级数组
+     * @return array
+     * @author wuhaotian
+     * @email 442384644@qq.com
+     * @date 2025/6/16
+     */
+    public function getAgentLevelArr()
+    {
+        return $this->dao->getColumn(['status'=>1,'is_del'=>0], 'name', 'grade');
+    }
 }

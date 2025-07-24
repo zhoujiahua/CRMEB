@@ -45,7 +45,6 @@ export default {
     configObj: {
       handler(nVal, oVal) {
         this.defaults = nVal;
-        console.log(nVal, 'tabVal',this.configNme);
         this.configData = nVal[this.configNme];
         this.current = this.configData.tabVal;
       },

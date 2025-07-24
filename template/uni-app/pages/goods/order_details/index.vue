@@ -270,7 +270,7 @@
 				</button>
 			</div>
 			<!-- #endif -->
-			<view class="wrapper" v-if="isReturen == 1 && (is_gift == 0 || is_gift == 1)">
+			<view class="wrapper" v-if="isReturn == 1 && (is_gift == 0 || is_gift == 1)">
 				<view class="item acea-row row-between">
 					<view>{{ $t(`申请理由`) }}：</view>
 					<view class="conter">{{ orderInfo.refund_reason }}</view>
@@ -279,7 +279,7 @@
 					<view>{{ $t(`用户备注`) }}：</view>
 					<view class="conter">{{ orderInfo.refund_explain }}</view>
 				</view>
-				<view class="item acea-row row-between" v-if="orderInfo.refund_img.length">
+				<view class="item acea-row row-between" v-if="orderInfo.refund_img && orderInfo.refund_img.length">
 					<view>{{ $t(`申请图片`) }}：</view>
 					<view class="upload acea-row row-middle">
 						<view class="conter">
@@ -316,7 +316,7 @@
 					<view>{{ $t(`支付方式`) }}：</view>
 					<view class="conter">{{ $t(orderInfo._status._payType) }}</view>
 				</view>
-				<view class="item acea-row row-between" v-if="orderInfo.mark && isReturen != 1">
+				<view class="item acea-row row-between" v-if="orderInfo.mark && isReturn != 1">
 					<view v-if="orderInfo.pid">{{ $t(`买家备注`) }}：</view>
 					<view v-else>{{ $t(`买家留言`) }}：</view>
 					<view class="conter">{{ orderInfo.mark }}</view>
@@ -492,7 +492,7 @@
 					<view class="bnt bg-color" v-if="status.class_status == 3 && !split.length" @click="confirmOrder()">
 						{{ $t(`确认收货`) }}
 					</view>
-					<view class="bnt bg-color" v-if="orderInfo.paid == 1 && !is_gift" @tap="goOrderConfirm">{{ $t(`再次购买`) }}</view>
+					<view class="bnt bg-color" v-if="orderInfo.paid == 1 && !is_gift && isReturn != 1" @tap="goOrderConfirm">{{ $t(`再次购买`) }}</view>
 					<view class="bnt bg-color" v-if="orderInfo.paid == 1 && is_gift != 0 && orderInfo.gift_uid == 0" @tap="giftModalShow = true">{{ $t(`送给好友`) }}</view>
 					<view
 						class="bnt bg-color"
@@ -512,7 +512,7 @@
 					>
 						{{ $t(`查看退货物流`) }}
 					</navigator>
-					<view class="bnt cancel" v-if="(orderInfo.is_cancel == 0 && status.type == 4 && !split.length) || status.type == -2" @tap="delOrder">
+					<view class="bnt cancel" v-if="(status.type == 4 && !split.length) || status.type == -2" @tap="delOrder">
 						{{ $t(`删除订单`) }}
 					</view>
 				</view>
@@ -693,7 +693,7 @@ export default {
 			invList: [],
 			customerInfo: {},
 			userInfo: {},
-			isReturen: '',
+			isReturn: '',
 			urlQuery: '',
 			is_gift: 0,
 			giftData: null,
@@ -705,7 +705,7 @@ export default {
 	onLoad: function (options) {
 		if (options.order_id) {
 			this.$set(this, 'order_id', options.order_id);
-			this.isReturen = options.isReturen;
+			this.isReturn = options.isReturn;
 		}
 		if (options.invoice_id) {
 			this.invoice_id = options.invoice_id;
@@ -862,7 +862,7 @@ export default {
 				});
 		},
 		goGoodCall() {
-			getCustomer(`/pages/extension/customer_list/chat?orderId=${this.order_id}&isReturen=${this.isReturen}`);
+			getCustomer(`/pages/extension/customer_list/chat?orderId=${this.order_id}&isReturn=${this.isReturn}`);
 		},
 		openSubcribe(e) {
 			let page = e;
@@ -972,7 +972,7 @@ export default {
 				title: this.$t(`正在加载中`)
 			});
 			let obj = '';
-			if (that.isReturen) {
+			if (that.isReturn) {
 				obj = refundOrderDetail(this.order_id);
 			} else {
 				obj = getOrderDetail(this.order_id);
@@ -1052,7 +1052,7 @@ export default {
 					if (this.orderInfo.refund_status != 0) {
 						this.isGoodsReturn = true;
 					} else {
-						this.isReturen = 0;
+						this.isReturn = 0;
 					}
 					if (that.invoice_id && !that.invoiceData) {
 						that.invChecked = that.invoice_id || '';
@@ -1342,7 +1342,7 @@ export default {
 				content: this.$t(`确定删除该订单`),
 				success: (res) => {
 					if (res.confirm) {
-						(that.isReturen ? refundOrderDel : orderDel)(that.order_id)
+						(that.isReturn ? refundOrderDel : orderDel)(that.order_id)
 							.then((res) => {
 								if (that.status.type == -2) {
 									return that.$util.Tips(

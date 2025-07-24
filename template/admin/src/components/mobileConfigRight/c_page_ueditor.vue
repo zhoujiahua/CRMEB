@@ -42,14 +42,16 @@ export default {
       handler(nVal, oVal) {
         this.defaults = nVal;
         this.configData = nVal[this.configNme];
-        // this.val = this.configData.val || '';
+        if (oVal && nVal.timestamp != oVal.timestamp) {
+          this.val = this.configData.val;
+        }
       },
       immediate: true,
       deep: true,
     },
   },
   beforeDestroy() {
-    this.val = ''
+    this.val = '';
   },
   methods: {
     getEditorContent(data) {

@@ -279,6 +279,11 @@ class UserWechatUserDao extends BaseDao
         if (isset($where['ids']) && count($where['ids'])) {
             $model->whereIn($userAlias . 'uid', $where['ids']);
         }
+
+        if (isset($where['agent_level']) && $where['agent_level'] != '') {
+            $model->where($userAlias . 'agent_level', $where['agent_level']);
+        }
+
         return $field ? $model->field($field) : $model;
     }
 

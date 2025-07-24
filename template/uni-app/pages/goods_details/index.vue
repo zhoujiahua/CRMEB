@@ -67,9 +67,9 @@
 								<text v-if="storeInfo.min_qty > 1">{{ $t(`起购`) }}{{ storeInfo.min_qty + storeInfo.unit_name }}</text>
 							</view>
 							<view class="label acea-row row-between-wrapper" style="padding-bottom: 20rpx">
-								<view class="delete-line">{{ $t(`￥`) }}{{ storeInfo.ot_price || 0 }}</view>
+								<view class="delete-line">{{ $t(`￥`) }}{{ ot_price || 0 }}</view>
 								<view class="">
-									{{ $t(`库存`) }} : {{ storeInfo.stock || 0 }}
+									{{ $t(`库存`) }} : {{ attr.productSelect.stock || 0 }}
 									{{ $t(storeInfo.unit_name) || '' }}
 								</view>
 								<view class="">
@@ -280,7 +280,7 @@
 						<view>客服</view>
 					</button> -->
 
-				<navigator v-if="!is_gift" hover-class="none" class="item" open-type="switchTab" url="/pages/index/index">
+				<navigator v-if="!is_gift" hover-class="none" class="item" open-type="reLaunch" url="/pages/index/index">
 					<view class="iconfont icon-shouye6"></view>
 					<view class="p_center">{{ $t(`首页`) }}</view>
 				</navigator>
@@ -593,6 +593,7 @@ export default {
 			good_list: [],
 			replyChance: 0,
 			CartCount: 0,
+			ot_price: 0,
 			isDown: true,
 			storeSelfMention: true,
 			posters: false,
@@ -1037,7 +1038,7 @@ export default {
 				this.realPriceData = res.data;
 				this.$set(this.attr.productSelect, 'price', res.data.real_price);
 				this.$set(this.attr.productSelect, 'vip_price', res.data.member_price);
-				
+				this.ot_price = res.data.ot_price
 			});
 		},
 		/**

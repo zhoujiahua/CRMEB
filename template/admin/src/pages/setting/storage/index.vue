@@ -82,7 +82,18 @@
       <el-card :bordered="false" shadow="never" class="ivu-mt">
         <el-form ref="formValidate" :model="formValidate" :rules="ruleValidate">
           <div class="abbreviation">
-            <div class="top">
+            <el-form-item label="是否开启缩略图：" label-width="110px">
+              <el-switch
+                :active-value="1"
+                :inactive-value="0"
+                v-model="formValidate.image_thumb_status"
+                size="large"
+              >
+                <span slot="open">开启</span>
+                <span slot="close">关闭</span>
+              </el-switch>
+            </el-form-item>
+            <div class="top" v-if="formValidate.image_thumb_status == 1">
               <div class="topBox">
                 <div class="topLeft">
                   <div class="img">
@@ -176,7 +187,7 @@
             </div>
             <el-divider />
             <div class="content mt20">
-              <el-form-item label="是否开启水印：" label-width="96px">
+              <el-form-item label="是否开启水印：" label-width="110px">
                 <el-switch
                   :active-value="1"
                   :inactive-value="0"
@@ -188,7 +199,7 @@
                 </el-switch>
               </el-form-item>
               <div v-if="formValidate.image_watermark_status == 1">
-                <el-form-item label="水印类型：" label-width="96px">
+                <el-form-item label="类型：" label-width="110px">
                   <el-radio-group v-model="formValidate.watermark_type">
                     <el-radio :label="1">图片</el-radio>
                     <el-radio :label="2">文字</el-radio>
@@ -196,7 +207,7 @@
                 </el-form-item>
                 <div v-if="formValidate.watermark_type == 1">
                   <div class="flex">
-                    <el-form-item class="contentIput" label="水印透明度：" prop="name" label-width="96px">
+                    <el-form-item class="contentIput" label="透明度：" prop="name" label-width="110px">
                       <el-input
                         class="topIput"
                         type="number"
@@ -205,7 +216,7 @@
                       >
                       </el-input>
                     </el-form-item>
-                    <el-form-item class="contentIput" label="水印倾斜度：" prop="mail" label-width="96px">
+                    <el-form-item class="contentIput" label="倾斜度：" prop="mail" label-width="110px">
                       <el-input
                         class="topIput"
                         type="number"
@@ -216,7 +227,7 @@
                     </el-form-item>
                   </div>
                   <div class="flex">
-                    <el-form-item class="contentIput" label="水印图片：" prop="name" label-width="96px">
+                    <el-form-item class="contentIput" label="图片：" prop="name" label-width="110px">
                       <div class="picBox" v-db-click @click="modalPicTap('单选')">
                         <div class="pictrue" v-if="formValidate.watermark_image">
                           <img :src="formValidate.watermark_image" />
@@ -226,7 +237,7 @@
                         </div>
                       </div>
                     </el-form-item>
-                    <el-form-item class="contentIput" label="水印位置：" prop="mail" label-width="96px">
+                    <el-form-item class="contentIput" label="位置：" prop="mail" label-width="110px">
                       <div class="conents">
                         <div class="positionBox">
                           <div
@@ -243,7 +254,7 @@
                     </el-form-item>
                   </div>
                   <div class="flex">
-                    <el-form-item class="contentIput" label="水印横坐标偏移量：" label-width="120px" prop="name">
+                    <el-form-item class="contentIput" label="横坐标偏移量：" label-width="110px" prop="name">
                       <el-input
                         class="topIput"
                         type="number"
@@ -254,7 +265,7 @@
                         <span slot="append">px</span>
                       </el-input>
                     </el-form-item>
-                    <el-form-item class="contentIput" label="水印纵坐标偏移量：" label-width="120px" prop="mail">
+                    <el-form-item class="contentIput" label="纵坐标偏移量：" label-width="110px" prop="mail">
                       <el-input
                         class="topIput"
                         type="number"
@@ -270,11 +281,11 @@
                 <!-- 水印类型为文字 -->
                 <div v-else>
                   <div class="flex">
-                    <el-form-item class="contentIput" label="水印文字：" label-width="96px" prop="name">
+                    <el-form-item class="contentIput" label="文字：" label-width="110px" prop="name">
                       <el-input class="topIput" v-model="formValidate.watermark_text" placeholder="请输入水印文字">
                       </el-input>
                     </el-form-item>
-                    <el-form-item class="contentIput" label="水印文字大小：" label-width="96px">
+                    <el-form-item class="contentIput" label="文字大小：" label-width="110px">
                       <el-input
                         class="topIput"
                         type="number"
@@ -285,10 +296,10 @@
                     </el-form-item>
                   </div>
                   <div class="flex">
-                    <el-form-item class="contentIput" label="水印字体颜色：" prop="name" label-width="96px">
+                    <el-form-item class="contentIput" label="字体颜色：" prop="name" label-width="110px">
                       <el-color-picker v-model="formValidate.watermark_text_color"></el-color-picker>
                     </el-form-item>
-                    <el-form-item class="contentIput" label="水印位置：" prop="mail" label-width="96px">
+                    <el-form-item class="contentIput" label="位置：" prop="mail" label-width="110px">
                       <div class="conents">
                         <div class="positionBox">
                           <div
@@ -305,7 +316,7 @@
                     </el-form-item>
                   </div>
                   <div class="flex">
-                    <el-form-item class="contentIput" label="水印字体旋转角度：" label-width="96px">
+                    <el-form-item class="contentIput" label="字体旋转角度：" label-width="110px">
                       <el-input
                         class="topIput"
                         type="number"
@@ -314,7 +325,7 @@
                       >
                       </el-input>
                     </el-form-item>
-                    <el-form-item class="contentIput" label="水印横坐标偏移量：" label-width="96px">
+                    <el-form-item class="contentIput" label="横坐标偏移量：" label-width="110px">
                       <el-input
                         class="topIput"
                         type="number"
@@ -325,7 +336,7 @@
                       </el-input>
                     </el-form-item>
                   </div>
-                  <el-form-item class="contentIput" label="水印纵坐标偏移量：" prop="mail" label-width="96px">
+                  <el-form-item class="contentIput" label="纵坐标偏移量：" prop="mail" label-width="110px">
                     <el-input
                       class="topIput"
                       type="number"
@@ -492,6 +503,7 @@ export default {
       positionId: 1,
       positiontlt: '',
       formValidate: {
+        image_thumb_status: 0,
         thumb_big_height: '',
         thumb_big_width: '',
         thumb_mid_width: '',

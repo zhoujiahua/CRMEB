@@ -98,7 +98,7 @@ export default {
       name: `${pre}labelList`,
       meta: {
         auth: ['admin-product-protection-list'],
-        title: '商品标签',
+        title: '商品保障',
       },
       component: () => import('@/pages/product/protectionList'),
     },

@@ -8,7 +8,7 @@
           <el-radio :label="1">多规格</el-radio>
         </el-radio-group>
         <el-dropdown v-if="formValidate.spec_type == 1" class="ml20" @command="confirm" trigger="hover">
-          <span class="el-dropdown-link"> 选择规格模板<i class="el-icon-arrow-down el-icon--right"></i> </span>
+          <span class="el-dropdown-link"> 选择规格模版<i class="el-icon-arrow-down el-icon--right"></i> </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="(item, index) in ruleList" :key="index" :command="item.rule_name">{{
               item.rule_name
@@ -135,260 +135,271 @@
     </el-col>
     <el-col :span="24" v-if="formValidate.spec_type === 1">
       <el-form-item label="商品属性：" class="labeltop" v-if="manyFormValidate.length">
-        <el-table
+        <VirtualScroll
           :data="manyFormValidate"
-          style="width: 100%"
-          :cell-class-name="tableCellClassName"
-          :span-method="objectSpanMethod"
-          border
-          :key="tableKey"
+          :buffer="50"
+          :height="62"
+          key-prop="index"
+          @change="(renderData) => (virtualList = renderData)"
         >
-          <el-table-column
-            v-for="(item, index) in formValidate.header"
-            :key="index"
-            :label="item.title"
-            :min-width="item.minWidth || '100'"
-            :fixed="item.fixed"
+          <!-- <el-table row-key="id" :data="virtualList" height="500px"> </el-table> -->
+          <el-table
+            row-key="index"
+            height="700px"
+            :data="manyFormValidate"
+            style="width: 100%"
+            :cell-class-name="tableCellClassName"
+            :span-method="objectSpanMethod"
+            border
+            :key="tableKey"
           >
-            <template slot-scope="scope">
-              <!-- 批量设置 -->
-              <template v-if="scope.$index == 0">
-                <template v-if="item.key">
-                  <div v-if="attrs.length && attrs[scope.column.index] && manyFormValidate.length">
-                    <el-select v-model="oneFormBatch[0][item.title]" :placeholder="`请选择${item.title}`" clearable>
-                      <el-option
-                        v-for="val in attrs[scope.column.index].detail"
-                        :key="val.value"
-                        :label="val.value"
-                        :value="val.value"
-                      >
-                      </el-option>
-                    </el-select>
-                  </div>
-                </template>
-                <template v-else-if="item.slot === 'pic'">
-                  <div class="acea-row row-middle" v-db-click @click="modalPicTap('dan', 'duopi', scope.$index)">
-                    <div class="pictrue pictrueTab" v-if="oneFormBatch[0].pic">
-                      <img v-lazy="oneFormBatch[0].pic" />
+            <el-table-column
+              v-for="(item, index) in formValidate.header"
+              :key="index"
+              :label="item.title"
+              :min-width="item.minWidth || '100'"
+              :fixed="item.fixed"
+            >
+              <template slot-scope="scope">
+                <!-- 批量设置 -->
+                <template v-if="scope.$index == 0">
+                  <template v-if="item.key">
+                    <div v-if="attrs.length && attrs[scope.column.index] && manyFormValidate.length">
+                      <el-select v-model="oneFormBatch[0][item.title]" :placeholder="`请选择${item.title}`" clearable>
+                        <el-option
+                          v-for="val in attrs[scope.column.index].detail"
+                          :key="val.value"
+                          :label="val.value"
+                          :value="val.value"
+                        >
+                        </el-option>
+                      </el-select>
                     </div>
-                    <div class="upLoad pictrueTab acea-row row-center-wrapper" v-else>
-                      <i class="el-icon-picture-outline" style="font-size: 24px"></i>
+                  </template>
+                  <template v-else-if="item.slot === 'pic'">
+                    <div class="acea-row row-middle" v-db-click @click="modalPicTap('dan', 'duopi', scope.$index)">
+                      <div class="pictrue pictrueTab" v-if="oneFormBatch[0].pic">
+                        <img v-lazy="oneFormBatch[0].pic" />
+                      </div>
+                      <div class="upLoad pictrueTab acea-row row-center-wrapper" v-else>
+                        <i class="el-icon-picture-outline" style="font-size: 24px"></i>
+                      </div>
                     </div>
-                  </div>
+                  </template>
+                  <template v-else-if="item.slot === 'price'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="oneFormBatch[0].price"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                      clearable
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'cost'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="oneFormBatch[0].cost"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                      clearable
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'ot_price'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="oneFormBatch[0].ot_price"
+                      :min="0"
+                      class="priceBox"
+                      clearable
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'stock'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="oneFormBatch[0].stock"
+                      :disabled="formValidate.virtual_type == 1"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                      clearable
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'fictitious'"> -- </template>
+                  <template v-else-if="item.slot === 'bar_code'">
+                    <el-input v-model="oneFormBatch[0].bar_code"></el-input>
+                  </template>
+                  <template v-else-if="item.slot === 'bar_code_number'">
+                    <el-input v-model="oneFormBatch[0].bar_code_number"></el-input>
+                  </template>
+                  <template v-else-if="item.slot === 'weight'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="oneFormBatch[0].weight"
+                      :step="0.1"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                      clearable
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'volume'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="oneFormBatch[0].volume"
+                      :step="0.1"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                      clearable
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'selected_spec'"> -- </template>
+                  <template v-else-if="item.slot === 'action'">
+                    <a v-db-click @click="batchAdd">批量修改</a>
+                    <el-divider direction="vertical"></el-divider>
+                    <a v-db-click @click="batchDel">清空</a>
+                  </template>
                 </template>
-                <template v-else-if="item.slot === 'price'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="oneFormBatch[0].price"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                    clearable
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'cost'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="oneFormBatch[0].cost"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                    clearable
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'ot_price'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="oneFormBatch[0].ot_price"
-                    :min="0"
-                    class="priceBox"
-                    clearable
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'stock'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="oneFormBatch[0].stock"
-                    :disabled="formValidate.virtual_type == 1"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                    clearable
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'fictitious'"> -- </template>
-                <template v-else-if="item.slot === 'bar_code'">
-                  <el-input v-model="oneFormBatch[0].bar_code"></el-input>
-                </template>
-                <template v-else-if="item.slot === 'bar_code_number'">
-                  <el-input v-model="oneFormBatch[0].bar_code_number"></el-input>
-                </template>
-                <template v-else-if="item.slot === 'weight'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="oneFormBatch[0].weight"
-                    :step="0.1"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                    clearable
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'volume'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="oneFormBatch[0].volume"
-                    :step="0.1"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                    clearable
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'selected_spec'"> -- </template>
-                <template v-else-if="item.slot === 'action'">
-                  <a v-db-click @click="batchAdd">批量修改</a>
-                  <el-divider direction="vertical"></el-divider>
-                  <a v-db-click @click="batchDel">清空</a>
-                </template>
-              </template>
-              <template v-else>
-                <template v-if="item.key">
-                  <div>
-                    <span>{{ scope.row.detail[item.key] }}</span>
-                  </div>
-                </template>
-                <template v-if="item.slot === 'pic'">
-                  <div class="acea-row row-middle" v-db-click @click="modalPicTap('dan', 'duoTable', scope.$index)">
-                    <div class="pictrue pictrueTab" v-if="manyFormValidate[scope.$index].pic">
-                      <img v-lazy="manyFormValidate[scope.$index].pic" />
+                <template v-else>
+                  <template v-if="item.key">
+                    <div>
+                      <span>{{ scope.row.detail[item.key] }}</span>
                     </div>
-                    <div class="upLoad pictrueTab acea-row row-center-wrapper" v-else>
-                      <i class="el-icon-picture-outline" style="font-size: 24px"></i>
+                  </template>
+                  <template v-if="item.slot === 'pic'">
+                    <div class="acea-row row-middle" v-db-click @click="modalPicTap('dan', 'duoTable', scope.$index)">
+                      <div class="pictrue pictrueTab" v-if="manyFormValidate[scope.$index].pic">
+                        <img v-lazy="manyFormValidate[scope.$index].pic" />
+                      </div>
+                      <div class="upLoad pictrueTab acea-row row-center-wrapper" v-else>
+                        <i class="el-icon-picture-outline" style="font-size: 24px"></i>
+                      </div>
                     </div>
-                  </div>
-                </template>
-                <template v-if="item.slot === 'price'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="manyFormValidate[scope.$index].price"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'cost'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="manyFormValidate[scope.$index].cost"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'ot_price'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="manyFormValidate[scope.$index].ot_price"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'stock'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="manyFormValidate[scope.$index].stock"
-                    :disabled="formValidate.virtual_type == 1"
-                    :min="0"
-                    :max="9999999999"
-                    :precision="0"
-                    class="priceBox"
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'bar_code'">
-                  <el-input v-model="manyFormValidate[scope.$index].bar_code"></el-input>
-                </template>
-                <template v-else-if="item.slot === 'bar_code_number'">
-                  <el-input v-model="manyFormValidate[scope.$index].bar_code_number"></el-input>
-                </template>
-                <template v-else-if="item.slot === 'weight'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="manyFormValidate[scope.$index].weight"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'volume'">
-                  <el-input-number
-                    :controls="false"
-                    v-model="manyFormValidate[scope.$index].volume"
-                    :min="0"
-                    :max="9999999999"
-                    class="priceBox"
-                  ></el-input-number>
-                </template>
-                <template v-else-if="item.slot === 'fictitious'">
-                  <el-button
-                    v-if="!manyFormValidate[scope.$index].coupon_id && formValidate.virtual_type == 2"
-                    v-db-click
-                    @click="addGoodsCoupon(scope.$index, 'manyFormValidate')"
-                    >选择优惠券</el-button
-                  >
-                  <span
-                    class="see"
-                    v-else-if="manyFormValidate[scope.$index].coupon_id && formValidate.virtual_type == 2"
-                    v-db-click
-                    @click="see(manyFormValidate[scope.$index], 'manyFormValidate', scope.$index)"
-                    >{{ manyFormValidate[scope.$index].coupon_name }}</span
-                  >
-                  <el-button
-                    v-else-if="
-                      !manyFormValidate[scope.$index].virtual_list.length &&
-                      !manyFormValidate[scope.$index].stock &&
-                      formValidate.virtual_type == 1
-                    "
-                    v-db-click
-                    @click="addVirtual(scope.$index, 'manyFormValidate')"
-                    >添加卡密</el-button
-                  >
-                  <span
-                    class="see"
-                    v-else-if="
-                      (manyFormValidate[scope.$index].virtual_list.length || manyFormValidate[scope.$index].stock) &&
-                      formValidate.virtual_type == 1
-                    "
-                    v-db-click
-                    @click="see(manyFormValidate[scope.$index], 'manyFormValidate', scope.$index)"
-                    >已设置</span
-                  >
-                </template>
+                  </template>
+                  <template v-if="item.slot === 'price'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="manyFormValidate[scope.$index].price"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'cost'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="manyFormValidate[scope.$index].cost"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'ot_price'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="manyFormValidate[scope.$index].ot_price"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'stock'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="manyFormValidate[scope.$index].stock"
+                      :disabled="formValidate.virtual_type == 1"
+                      :min="0"
+                      :max="9999999999"
+                      :precision="0"
+                      class="priceBox"
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'bar_code'">
+                    <el-input v-model="manyFormValidate[scope.$index].bar_code"></el-input>
+                  </template>
+                  <template v-else-if="item.slot === 'bar_code_number'">
+                    <el-input v-model="manyFormValidate[scope.$index].bar_code_number"></el-input>
+                  </template>
+                  <template v-else-if="item.slot === 'weight'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="manyFormValidate[scope.$index].weight"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'volume'">
+                    <el-input-number
+                      :controls="false"
+                      v-model="manyFormValidate[scope.$index].volume"
+                      :min="0"
+                      :max="9999999999"
+                      class="priceBox"
+                    ></el-input-number>
+                  </template>
+                  <template v-else-if="item.slot === 'fictitious'">
+                    <el-button
+                      v-if="!manyFormValidate[scope.$index].coupon_id && formValidate.virtual_type == 2"
+                      v-db-click
+                      @click="addGoodsCoupon(scope.$index, 'manyFormValidate')"
+                      >选择优惠券</el-button
+                    >
+                    <span
+                      class="see"
+                      v-else-if="manyFormValidate[scope.$index].coupon_id && formValidate.virtual_type == 2"
+                      v-db-click
+                      @click="see(manyFormValidate[scope.$index], 'manyFormValidate', scope.$index)"
+                      >{{ manyFormValidate[scope.$index].coupon_name }}</span
+                    >
+                    <el-button
+                      v-else-if="
+                        !manyFormValidate[scope.$index].virtual_list.length &&
+                        !manyFormValidate[scope.$index].stock &&
+                        formValidate.virtual_type == 1
+                      "
+                      v-db-click
+                      @click="addVirtual(scope.$index, 'manyFormValidate')"
+                      >添加卡密</el-button
+                    >
+                    <span
+                      class="see"
+                      v-else-if="
+                        (manyFormValidate[scope.$index].virtual_list.length || manyFormValidate[scope.$index].stock) &&
+                        formValidate.virtual_type == 1
+                      "
+                      v-db-click
+                      @click="see(manyFormValidate[scope.$index], 'manyFormValidate', scope.$index)"
+                      >已设置</span
+                    >
+                  </template>
 
-                <template v-else-if="item.slot === 'selected_spec'">
-                  <el-switch
-                    v-model="manyFormValidate[scope.$index].is_default_select"
-                    :active-value="1"
-                    :inactive-value="0"
-                    @change="(e) => changeDefaultSelect(e, scope.$index)"
-                  />
-                </template>
-                <template v-else-if="item.slot === 'action'">
-                  <el-switch
-                    class="defineSwitch"
-                    v-model="manyFormValidate[scope.$index].is_show"
-                    active-text="显示"
-                    inactive-text="隐藏"
-                    :active-value="1"
-                    :inactive-value="0"
-                    @change="changeDefaultShow(scope.$index)"
-                  />
+                  <template v-else-if="item.slot === 'selected_spec'">
+                    <el-switch
+                      v-model="manyFormValidate[scope.$index].is_default_select"
+                      :active-value="1"
+                      :inactive-value="0"
+                      @change="(e) => changeDefaultSelect(e, scope.$index)"
+                    />
+                  </template>
+                  <template v-else-if="item.slot === 'action'">
+                    <el-switch
+                      class="defineSwitch"
+                      v-model="manyFormValidate[scope.$index].is_show"
+                      active-text="显示"
+                      inactive-text="隐藏"
+                      :active-value="1"
+                      :inactive-value="0"
+                      @change="changeDefaultShow(scope.$index)"
+                    />
+                  </template>
                 </template>
               </template>
-            </template>
-          </el-table-column>
-        </el-table>
+            </el-table-column>
+          </el-table>
+        </VirtualScroll>
       </el-form-item>
     </el-col>
     <!-- ------------------------------------------------- -->
@@ -542,11 +553,12 @@
 
 <script>
 import vuedraggable from 'vuedraggable';
-
+import VirtualScroll from './virtualTabel.vue';
 export default {
   name: 'SpecStock',
   components: {
     draggable: vuedraggable,
+    VirtualScroll,
   },
   props: {
     formValidate: {
@@ -585,6 +597,11 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  data() {
+    return {
+      virtualList: [],
+    };
   },
   methods: {
     changeSpec(val) {
@@ -712,5 +729,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '../productAdd.scss';
+@use '../productAdd.scss' as *;
 </style>

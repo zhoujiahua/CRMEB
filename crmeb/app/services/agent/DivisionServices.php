@@ -526,6 +526,7 @@ class DivisionServices extends BaseServices
                 }
                 if ($divisionInfo['division_status'] == 1 && $divisionInfo['division_end_time'] > time()) {
                     $divisionPercent = bcsub($divisionInfo['division_percent'], $agentPercent, 2);
+                    $divisionPercent = $divisionPercent < 0 ? 0 : $divisionPercent;
                 } else {
                     $divisionPercent = 0;
                 }
@@ -542,11 +543,13 @@ class DivisionServices extends BaseServices
                 }
                 if ($agentInfo['division_status'] == 1 && $agentInfo['division_end_time'] > time()) {
                     $agentPercent = bcsub($agentInfo['division_percent'], $staffPercent, 2);
+                    $agentPercent = $agentPercent < 0 ? 0 : $agentPercent;
                 } else {
                     $agentPercent = 0;
                 }
                 if ($divisionInfo['division_status'] == 1 && $divisionInfo['division_end_time'] > time()) {
                     $divisionPercent = bcsub($divisionInfo['division_percent'], bcadd($staffPercent, $agentPercent, 2), 2);
+                    $divisionPercent = $divisionPercent < 0 ? 0 : $divisionPercent;
                 } else {
                     $divisionPercent = 0;
                 }
@@ -563,16 +566,19 @@ class DivisionServices extends BaseServices
                         $storeBrokerageTwo = 0;
                         if ($staffInfo['division_status'] == 1 && $staffInfo['division_end_time'] > time()) {
                             $staffPercent = bcsub($staffInfo['division_percent'], $storeBrokerageOne, 2);
+                            $staffPercent = $staffPercent < 0 ? 0 : $staffPercent;
                         } else {
                             $staffPercent = 0;
                         }
                         if ($agentInfo['division_status'] == 1 && $agentInfo['division_end_time'] > time()) {
                             $agentPercent = bcsub($agentInfo['division_percent'], bcadd($storeBrokerageOne, $staffPercent, 2), 2);
+                            $agentPercent = $agentPercent < 0 ? 0 : $agentPercent;
                         } else {
                             $agentPercent = 0;
                         }
                         if ($divisionInfo['division_status'] == 1 && $divisionInfo['division_end_time'] > time()) {
                             $divisionPercent = bcsub($divisionInfo['division_percent'], bcadd(bcadd($storeBrokerageOne, $staffPercent, 2), $agentPercent, 2), 2);
+                            $divisionPercent = $divisionPercent < 0 ? 0 : $divisionPercent;
                         } else {
                             $divisionPercent = 0;
                         }
@@ -582,16 +588,19 @@ class DivisionServices extends BaseServices
                         $brokerageOneTwo = bcadd($storeBrokerageOne, $storeBrokerageTwo, 2);
                         if ($staffInfo['division_status'] == 1 && $staffInfo['division_end_time'] > time()) {
                             $staffPercent = bcsub($staffInfo['division_percent'], $brokerageOneTwo, 2);
+                            $staffPercent = $staffPercent < 0 ? 0 : $staffPercent;
                         } else {
                             $staffPercent = 0;
                         }
                         if ($agentInfo['division_status'] == 1 && $agentInfo['division_end_time'] > time()) {
                             $agentPercent = bcsub($agentInfo['division_percent'], bcadd($brokerageOneTwo, $staffPercent, 2), 2);
+                            $agentPercent = $agentPercent < 0 ? 0 : $agentPercent;
                         } else {
                             $agentPercent = 0;
                         }
                         if ($divisionInfo['division_status'] == 1 && $divisionInfo['division_end_time'] > time()) {
                             $divisionPercent = bcsub($divisionInfo['division_percent'], bcadd(bcadd($brokerageOneTwo, $staffPercent, 2), $agentPercent, 2), 2);
+                            $divisionPercent = $divisionPercent < 0 ? 0 : $divisionPercent;
                         } else {
                             $divisionPercent = 0;
                         }
@@ -604,11 +613,13 @@ class DivisionServices extends BaseServices
                         $staffPercent = 0;
                         if ($agentInfo['division_status'] == 1 && $agentInfo['division_end_time'] > time()) {
                             $agentPercent = bcsub($agentInfo['division_percent'], $storeBrokerageOne, 2);
+                            $agentPercent = $agentPercent < 0 ? 0 : $agentPercent;
                         } else {
                             $agentPercent = 0;
                         }
                         if ($divisionInfo['division_status'] == 1 && $divisionInfo['division_end_time'] > time()) {
                             $divisionPercent = bcsub($divisionInfo['division_percent'], bcadd($storeBrokerageOne, $agentPercent, 2), 2);
+                            $divisionPercent = $divisionPercent < 0 ? 0 : $divisionPercent;
                         } else {
                             $divisionPercent = 0;
                         }
@@ -619,11 +630,13 @@ class DivisionServices extends BaseServices
                         $staffPercent = 0;
                         if ($agentInfo['division_status'] == 1 && $agentInfo['division_end_time'] > time()) {
                             $agentPercent = bcsub($agentInfo['division_percent'], $brokerageOneTwo, 2);
+                            $agentPercent = $agentPercent < 0 ? 0 : $agentPercent;
                         } else {
                             $agentPercent = 0;
                         }
                         if ($divisionInfo['division_status'] == 1 && $divisionInfo['division_end_time'] > time()) {
                             $divisionPercent = bcsub($divisionInfo['division_percent'], bcadd($brokerageOneTwo, $agentPercent, 2), 2);
+                            $divisionPercent = $divisionPercent < 0 ? 0 : $divisionPercent;
                         } else {
                             $divisionPercent = 0;
                         }
@@ -638,6 +651,7 @@ class DivisionServices extends BaseServices
                         $agentPercent = 0;
                         if ($divisionInfo['division_status'] == 1 && $divisionInfo['division_end_time'] > time()) {
                             $divisionPercent = bcsub($divisionInfo['division_percent'], $storeBrokerageOne, 2);
+                            $divisionPercent = $divisionPercent < 0 ? 0 : $divisionPercent;
                         } else {
                             $divisionPercent = 0;
                         }
@@ -649,6 +663,7 @@ class DivisionServices extends BaseServices
                         $agentPercent = 0;
                         if ($divisionInfo['division_status'] == 1 && $divisionInfo['division_end_time'] > time()) {
                             $divisionPercent = bcsub($divisionInfo['division_percent'], $brokerageOneTwo, 2);
+                            $divisionPercent = $divisionPercent < 0 ? 0 : $divisionPercent;
                         } else {
                             $divisionPercent = 0;
                         }

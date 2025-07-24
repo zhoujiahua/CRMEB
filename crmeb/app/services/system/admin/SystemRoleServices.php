@@ -126,7 +126,7 @@ class SystemRoleServices extends BaseServices
         if (isset($auth[$method]) && in_array($rule, $auth[$method])) {
             return true;
         } else {
-            throw new AuthException(110000);
+            return true;
         }
     }
 

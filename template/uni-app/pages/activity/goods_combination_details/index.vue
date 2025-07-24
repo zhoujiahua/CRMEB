@@ -159,7 +159,16 @@
 							</view>
 						</view>
 					</view>
+					<view class='playWay'>
+						<view class='title acea-row row-between-wrapper'>
+							<view>{{$t(`拼团简介`)}}</view>
+						</view>
+						<view class='way acea-row row-middle py-16'>
+							{{storeInfo.info}}
+						</view>
+					</view>
 				</view>
+				
 				<view class='userEvaluation' id="past1" v-if="replyCount">
 					<view class='title acea-row row-between-wrapper'>
 						<view>{{$t(`用户评价`)}}({{replyCount}})</view>
@@ -568,10 +577,6 @@
 				});
 			},
 			// #endif
-
-
-
-
 
 			showAll: function() {
 				this.AllIndexDefault = this.AllIndex;

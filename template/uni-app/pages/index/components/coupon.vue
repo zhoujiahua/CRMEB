@@ -271,6 +271,7 @@
 				getCoupons({
 					page: 1,
 					limit: this.dataConfig.numberConfig.val >= limit ? limit : this.dataConfig.numberConfig.val,
+					type: -1,
 				}).then(res => {
 					that.$set(that, 'couponList', res.data.list);
 				}).catch(err => {

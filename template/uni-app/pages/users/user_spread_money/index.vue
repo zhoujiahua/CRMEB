@@ -129,6 +129,10 @@ export default {
 		this.isWeixin = this.$wechat.isWeixin();
 		//#endif
 		let type = this.type;
+		this.loadend = false
+		this.page = 1;
+		this.times = [];
+		this.recordList = [];
 		if (type == 1) {
 			uni.setNavigationBarTitle({
 				title: '提现记录'

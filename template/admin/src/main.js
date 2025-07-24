@@ -42,7 +42,8 @@ import moment from 'moment';
 import TreeTable from 'tree-table-vue';
 import VOrgTree from 'v-org-tree';
 import 'xe-utils';
-import VXETable from 'vxe-table';
+import VxeTable from 'vxe-table';
+import VxeUIAll from 'vxe-pc-ui';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import VueLazyload from 'vue-lazyload';
 import Viewer from 'v-viewer';
@@ -76,6 +77,7 @@ import 'viewerjs/dist/viewer.css';
 import 'codemirror/lib/codemirror.css';
 import 'vxe-table/lib/style.css';
 import 'vxe-table/lib/index.css';
+import 'vxe-pc-ui/es/style.css';
 import 'vue-happy-scroll/docs/happy-scroll.css';
 
 // 全局过滤器
@@ -102,7 +104,8 @@ Vue.use(VueDND);
 Vue.use(TreeTable);
 Vue.use(VOrgTree);
 Vue.use(VueAwesomeSwiper);
-Vue.use(VXETable);
+Vue.use(VxeUIAll);
+Vue.use(VxeTable);
 Vue.use(vuescroll);
 Vue.use(imgModal);
 Vue.use(videoModal);
@@ -194,8 +197,8 @@ Object.keys(filters).forEach((key) => {
 
 // 添加crmeb chat 统计
 fetch(`${settings.apiBaseURL}/custom_admin_js`)
-  .then(response => response.text())
-  .then(content => {
+  .then((response) => response.text())
+  .then((content) => {
     // 尝试解析是否为HTML（带<script>标签）
     const isHTML = content.trim().startsWith('<script');
 
@@ -208,17 +211,19 @@ fetch(`${settings.apiBaseURL}/custom_admin_js`)
       const doc = parser.parseFromString(content, 'text/html');
       const scripts = doc.querySelectorAll('script');
 
-      externalScripts = Array.from(scripts).filter(script => script.src);
-      inlineScripts = Array.from(scripts).filter(script => !script.src);
+      externalScripts = Array.from(scripts).filter((script) => script.src);
+      inlineScripts = Array.from(scripts).filter((script) => !script.src);
     } else {
       // 情况2：不带<script>标签，直接当作内联脚本处理
-      inlineScripts = [{
-        textContent: content
-      }];
+      inlineScripts = [
+        {
+          textContent: content,
+        },
+      ];
     }
 
     // 1. 先加载所有外部脚本（如果有）
-    const loadExternalScripts = externalScripts.map(script => {
+    const loadExternalScripts = externalScripts.map((script) => {
       return new Promise((resolve, reject) => {
         const newScript = document.createElement('script');
         newScript.src = script.src;
@@ -231,15 +236,15 @@ fetch(`${settings.apiBaseURL}/custom_admin_js`)
     // 2. 等外部脚本加载完成后，再执行内联脚本
     Promise.all(loadExternalScripts)
       .then(() => {
-        inlineScripts.forEach(script => {
+        inlineScripts.forEach((script) => {
           const newScript = document.createElement('script');
           newScript.textContent = script.textContent;
           document.body.appendChild(newScript);
         });
       })
-      .catch(error => console.error('Failed to load external scripts:', error));
+      .catch((error) => console.error('Failed to load external scripts:', error));
   })
-  .catch(error => console.error('Error fetching script:', error));
+  .catch((error) => console.error('Error fetching script:', error));
 
 /* eslint-disable no-new */
 new Vue({

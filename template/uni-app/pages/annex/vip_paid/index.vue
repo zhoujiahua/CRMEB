@@ -478,9 +478,14 @@ export default {
 					: location.protocol + '//' + location.hostname + '/pages/annex/vip_paid/index'
 				// #endif
 			};
-			// #ifdef MP
 			memberCardCreate(query)
 				.then((res) => {
+					if (res.data.status === 'PAY_DEFICIENCY') {
+						return uni.showToast({
+							icon:'none',
+							title: this.$t(`${res.msg}`)
+						});
+					}
 					if (parseFloat(this.svip.pre_price) > 0) {
 						this.callPay(res);
 					} else {
@@ -498,28 +503,6 @@ export default {
 						icon: 'none'
 					});
 				});
-			// #endif
-			// #ifndef MP
-			memberCardCreate(query)
-				.then((res) => {
-					if (parseFloat(this.svip.pre_price) > 0) {
-						this.callPay(res);
-					} else {
-						this.memberCard();
-						this.groomList();
-						uni.hideLoading();
-						uni.showToast({
-							title: this.$t(`成功开启试用`)
-						});
-					}
-				})
-				.catch((err) => {
-					uni.showToast({
-						title: err,
-						icon: 'none'
-					});
-				});
-			// #endif
 		},
 		formpost(url, postData) {
 			let tempform = document.createElement('form');

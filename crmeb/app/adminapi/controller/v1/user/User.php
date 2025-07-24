@@ -64,6 +64,7 @@ class User extends AuthController
             ['pay_count_num', []],
             ['pay_count_money', []],
             ['recharge_count', []],
+            ['agent_level', 0],
         ]);
         $where['label_id'] = toIntArray($where['label_id']);
         return app('json')->success($this->services->index($where));

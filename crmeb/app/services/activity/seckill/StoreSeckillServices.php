@@ -805,16 +805,7 @@ class StoreSeckillServices extends BaseServices
         $data['time_ids'] = implode(',', $data['time_ids']);
 
         return $this->transaction(function () use ($id, $data, $timeIds) {
-            /** @var StoreActivityServices $StoreActivityServices */
-            $StoreActivityServices = app()->make(StoreActivityServices::class);
-            if ($id) {
-                $StoreActivityServices->update($id, $data);
-//                $this->clearActivitySeckill($id);
-            } else {
-                $data['add_time'] = time();
-                $res = $StoreActivityServices->save($data);
-                $id = (int)$res->id;
-            }
+
             $productInfos = $data['product_infos'];
             $productIds = array_column($productInfos, 'id');
             /** @var StoreProductServices $productServices */
@@ -822,6 +813,17 @@ class StoreSeckillServices extends BaseServices
             $productList = $productServices->searchList(['id' => $productIds, 'is_del' => 0]);
             $productList = $productList['list'] ?? [];
             $productInfos = array_combine($productIds, $productInfos);
+
+            /** @var StoreActivityServices $StoreActivityServices */
+            $StoreActivityServices = app()->make(StoreActivityServices::class);
+            if ($id) {
+                $StoreActivityServices->update($id, $data);
+                $this->clearActivitySeckill($id, $productIds);
+            } else {
+                $data['add_time'] = time();
+                $res = $StoreActivityServices->save($data);
+                $id = (int)$res->id;
+            }
             foreach ($productList as &$product) {
                 $attrInfo = $productServices->getProductRules((int)$product['id']);
                 $seckillData = [];
@@ -892,11 +894,16 @@ class StoreSeckillServices extends BaseServices
         });
     }
 
-    public function clearActivitySeckill($id)
+    public function clearActivitySeckill($id, $productIds = [])
     {
         $seckill = $this->dao->getList(['activity_id' => $id, 'is_del' => 0]);
-        if ($seckill) {
-            $seckillIds = array_column($seckill, 'id');
+        $seckillIds = [];
+        foreach ($seckill as $item) {
+            if (!in_array($item['product_id'], $productIds)) {
+                $seckillIds[] = $item['id'];
+            }
+        }
+        if (count($seckillIds)) {
             /** @var StoreProductAttrResultServices $storeProductAttrResultServices */
             $storeProductAttrResultServices = app()->make(StoreProductAttrResultServices::class);
             /** @var StoreDescriptionServices $storeDescriptionServices */

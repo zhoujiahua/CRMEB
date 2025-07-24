@@ -800,7 +800,7 @@ class StorePinkServices extends BaseServices
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function virtualCombination($pinkId)
+    public function virtualCombination($pinkId, $operator = 'auto')
     {
         $pinkInfo = $this->dao->get($pinkId);
         $people = $pinkInfo['people'];
@@ -809,7 +809,7 @@ class StorePinkServices extends BaseServices
         /** @var StoreCombinationServices $services */
         $services = app()->make(StoreCombinationServices::class);
         $percent2 = $services->value(['id' => $pinkInfo['cid']], 'virtual');
-        if ($percent1 >= $percent2) {
+        if ($percent1 >= $percent2 || $operator == 'admin') {
             $time = time();
             $num = $people - $count;
             $data = [];

@@ -1001,6 +1001,10 @@ export default {
       this.formValidate.cate_id = cate_id;
       if (data.attr) {
         this.oneFormValidate = [data.attr];
+        this.oneFormValidate[0].vip_proportion = (
+          (this.oneFormValidate[0].vip_price / this.oneFormValidate[0].price) *
+          100
+        ).toFixed(2);
       }
       this.getproductLabelUseListApi();
 
@@ -1687,11 +1691,31 @@ export default {
      * @param {Array} data 规格数据
      * */
     generateAttr(data, val) {
-      // 判断该段Js执行时间
-      console.time('generateAttr');
       this.generateHeader(data);
       const combinations = this.generateCombinations(data);
-      let rows = combinations.map((combination) => {
+      console.log('规格组合总数：' + combinations.length);
+      const virtualType = this.formValidate.virtual_type;
+      // 如果combinations数量超过 500，则分批次生成属性
+      let rows = [];
+      if (combinations.length > 500) {
+        const batchSize = Math.ceil(combinations.length / 500);
+        for (let i = 0; i < combinations.length; i += batchSize) {
+          setTimeout((e) => {
+            let d = this.generateAttrBatch(data, combinations.slice(i, i + batchSize), val);
+            rows = [...rows, ...d];
+            this.manyFormValidate = [...this.oneFormBatch, ...rows];
+          }, 0);
+        }
+      } else {
+        rows = this.generateAttrBatch(data, combinations, val);
+        this.manyFormValidate = [...this.oneFormBatch, ...rows];
+      }
+    },
+    // 生成属性批次
+    generateAttrBatch(data, combinations, val) {
+      const existingItems = this.manyFormValidate.slice(1); // 排除第一项默认数据
+
+      const rows = combinations.map((combination) => {
         const row = {
           attr_arr: combination,
           detail: {},
@@ -1712,68 +1736,63 @@ export default {
           vip_price: 0,
           vip_proportion: 0,
         };
-        // 判断商品类型是卡密/优惠券
-        let virtualType = this.formValidate.virtual_type;
-        if (virtualType == 1) {
-          this.$set(row, 'virtual_list', []);
-          this.$set(row, 'disk_info', '');
-        } else if (virtualType == 2) {
-          this.$set(row, 'coupon_id', 0);
-          this.$set(row, 'coupon_name', '');
-        }
-        for (let i = 0; i < combination.length; i++) {
-          const value = combination[i];
-          this.$set(row, data[i].value, value);
-          this.$set(row, 'title', data[i].value);
-          this.$set(row, 'key', data[i].value);
-          this.$set(row.detail, data[i].value, value);
-          // 如果manyFormValidate中存在该属性值，则赋值
-          for (let k = 0; k < this.manyFormValidate.length; k++) {
-            const manyItem = this.manyFormValidate[k];
-            // 对比两个数组是否完全相等
-            if (k > 0 && manyItem.attr_arr && arraysEqual(manyItem.attr_arr, combination)) {
-              Object.assign(row, {
-                price: manyItem.price,
-                cost: manyItem.cost,
-                ot_price: manyItem.ot_price,
-                stock: manyItem.stock,
-                pic: manyItem.pic,
-                unique: manyItem.unique || '',
-                weight: manyItem.weight || '',
-                volume: manyItem.volume || '',
-                is_show: manyItem.is_show || 1,
-                is_default_select: manyItem.is_default_select || 0,
-                volume: manyItem.volume || 0,
-                bar_code_number: manyItem.bar_code_number || 0,
-                is_virtual: manyItem.is_virtual,
-                brokerage: manyItem.brokerage,
-                brokerage_two: manyItem.brokerage_two,
-                vip_price: manyItem.vip_price,
-                vip_proportion: manyItem.vip_proportion,
-              });
 
-              if (virtualType == 1) {
-                row.virtual_list = manyItem.virtual_list;
-                row.disk_info = manyItem.disk_info;
-              } else if (virtualType == 2 && manyItem.coupon_id) {
-                row.coupon_id = manyItem.coupon_id;
-                row.coupon_name = manyItem.coupon_name;
-              }
-            } else if (k > 0 && manyItem.attr_arr.length && data[i].add_pic && combination.includes(val)) {
-              // data[i].detail中的value是规格值 存在与 manyItem.attr_arr 中的某一项
-              data[i].detail.map((e, ii) => {
-                combination.includes(e.value) && this.$set(row, 'pic', e.pic);
-              });
-            }
-          }
+        // 设置虚拟类型相关属性
+        if (this.formValidate.virtual_type === 1) {
+          row.virtual_list = [];
+          row.disk_info = '';
+        } else if (this.formValidate.virtual_type === 2) {
+          row.coupon_id = 0;
+          row.coupon_name = '';
         }
+
+        // 处理规格属性
+        data.forEach((item, i) => {
+          const value = combination[i];
+          row[item.value] = value;
+          row.title = item.value;
+          row.key = item.value;
+          row.detail[item.value] = value;
+
+          // 查找匹配的现有规格项
+          const matchedItem = existingItems.find((item) => item.attr_arr && arraysEqual(item.attr_arr, combination));
+
+          if (matchedItem) {
+            Object.assign(row, {
+              price: matchedItem.price,
+              cost: matchedItem.cost,
+              ot_price: matchedItem.ot_price,
+              stock: matchedItem.stock,
+              pic: matchedItem.pic,
+              unique: matchedItem.unique || '',
+              weight: matchedItem.weight || '',
+              volume: matchedItem.volume || '',
+              is_show: matchedItem.is_show || 1,
+              is_default_select: matchedItem.is_default_select || 0,
+              volume: matchedItem.volume || 0,
+              bar_code_number: matchedItem.bar_code_number || 0,
+              is_virtual: matchedItem.is_virtual,
+              brokerage: matchedItem.brokerage,
+              brokerage_two: matchedItem.brokerage_two,
+              vip_price: matchedItem.vip_price,
+              vip_proportion: matchedItem.vip_proportion,
+            });
+
+            if (this.formValidate.virtual_type === 1) {
+              row.virtual_list = matchedItem.virtual_list;
+              row.disk_info = matchedItem.disk_info;
+            } else if (this.formValidate.virtual_type === 2 && matchedItem.coupon_id) {
+              row.coupon_id = matchedItem.coupon_id;
+              row.coupon_name = matchedItem.coupon_name;
+            }
+          } else if (item.add_pic && combination.includes(val)) {
+            const picItem = item.detail.find((e) => combination.includes(e.value));
+            if (picItem) row.pic = picItem.pic;
+          }
+        });
         return row;
       });
-      this.$nextTick(() => {
-        // rows数组第一项 新增默认数据 oneFormBatch
-        this.manyFormValidate = [...this.oneFormBatch, ...rows];
-      });
-      console.timeEnd('generateAttr');
+      return rows;
     },
     // 切换默认选中规格
     changeDefaultSelect(e, index) {
@@ -2118,5 +2137,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import './productAdd.scss';
+@use './productAdd.scss' as *;
 </style>

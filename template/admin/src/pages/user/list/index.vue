@@ -88,6 +88,17 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="分销等级：">
+                <el-select v-model="agent_level" placeholder="请选择分销等级" clearable class="form_content_width">
+                  <el-option value="all" label="全部"></el-option>
+                  <el-option
+                    :value="item.grade"
+                    v-for="(item, index) in membershipList"
+                    :key="index"
+                    :label="item.name"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
               <el-form-item label="用户标签：" label-for="label_id">
                 <div class="labelInput acea-row row-between-wrapper" v-db-click @click="openSelectLabel">
                   <div style="width: 222px">
@@ -352,6 +363,11 @@
             <div>{{ scope.row.group_id }}</div>
           </template>
         </el-table-column>
+        <el-table-column label="分销等级" min-width="100">
+          <template slot-scope="scope">
+            <div>{{ scope.row.agent_level_name }}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="手机号" min-width="100">
           <template slot-scope="scope">
             <div>{{ scope.row.phone }}</div>
@@ -524,6 +540,7 @@ import userDetails from './handle/userDetails';
 import newsCategory from '@/components/newsCategory/index';
 import customerInfo from '@/components/customerInfo';
 import { cityList } from '@/api/app';
+import { membershipDataListApi } from '@/api/membershipLevel';
 
 export default {
   name: 'user_list',
@@ -612,12 +629,14 @@ export default {
         limit: 15,
         level: '',
         group_id: '',
+        agent_level: '',
         field_key: '',
       },
       before_pay_time: '',
       field_key: '',
       level: '',
       group_id: '',
+      agent_level: '',
       label_id: '',
       user_time_type: '',
       pay_count: '',
@@ -629,6 +648,7 @@ export default {
       timeVal: [],
       groupList: [],
       levelList: [],
+      membershipList: [],
       labelFrom: {
         page: 1,
         limit: '',
@@ -648,6 +668,7 @@ export default {
   mounted() {
     this.userGroup();
     this.levelLists();
+    this.membershipDataList();
     // this.groupLists();
   },
   methods: {
@@ -779,6 +800,16 @@ export default {
       };
       levelListApi(data).then((res) => {
         this.levelList = res.data.list;
+      });
+    },
+    membershipDataList() {
+      let data = {
+        page: 1,
+        limit: 0,
+        staus: 1,
+      };
+      membershipDataListApi(data).then((res) => {
+        this.membershipList = res.data.list;
       });
     },
     // 批量设置分组；
@@ -1028,6 +1059,7 @@ export default {
       this.userFrom.field_key = this.field_key === 'all' ? '' : this.field_key;
       this.userFrom.level = this.level === 'all' ? '' : this.level;
       this.userFrom.group_id = this.group_id === 'all' ? '' : this.group_id;
+      this.userFrom.agent_level = this.agent_level === 'all' ? '' : this.agent_level;
       this.loading = true;
       userList(this.userFrom)
         .then(async (res) => {
@@ -1060,6 +1092,7 @@ export default {
       this.userFrom.field_key = this.field_key === 'all' ? '' : this.field_key;
       this.userFrom.level = this.level === 'all' ? '' : this.level;
       this.userFrom.group_id = this.group_id === 'all' ? '' : this.group_id;
+      this.userFrom.agent_level = this.agent_level === 'all' ? '' : this.agent_level;
       let [th, filekey, data, fileName] = [[], [], [], ''];
       //   let fileName = "";
       let excelData = JSON.parse(JSON.stringify(this.userFrom));
@@ -1121,6 +1154,7 @@ export default {
         limit: 15,
         level: '',
         group_id: '',
+        agent_level: '',
         field_key: '',
         page: 1, // 当前页
         limit: 20, // 每页显示条数
@@ -1128,6 +1162,7 @@ export default {
       this.field_key = '';
       this.level = '';
       this.group_id = '';
+      this.agent_level = '';
       this.dataLabel = [];
       this.selectDataLabel = [];
       this.user_time_type = '';

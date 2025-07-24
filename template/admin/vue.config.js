@@ -47,6 +47,15 @@ module.exports = {
       config.plugins = [...config.plugins, ...pluginsPro];
     }
   },
+  css: {
+    loaderOptions: {
+      scss: {
+        sassOptions: {
+          silenceDeprecations: ['legacy-js-api'],
+        },
+      },
+    },
+  },
   chainWebpack: (config) => {
     config.plugins.delete('prefetch');
     config.resolve.alias

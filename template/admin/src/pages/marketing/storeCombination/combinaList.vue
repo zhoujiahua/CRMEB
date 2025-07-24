@@ -95,9 +95,11 @@
             <el-tag type="warning" v-show="scope.row.status === 3">未完成</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right" width="100">
+        <el-table-column label="操作" fixed="right" width="150">
           <template slot-scope="scope">
             <a v-db-click @click="Info(scope.row)">查看详情</a>
+            <el-divider v-if="scope.row.status === 1" direction="vertical"></el-divider>
+            <a v-if="scope.row.status === 1" v-db-click @click="joinCombination(scope.row)">立即成团</a>
           </template>
         </el-table-column>
       </el-table>
@@ -165,7 +167,7 @@
 import cardsData from '@/components/cards/cards';
 import { mapState } from 'vuex';
 import { formatDate } from '@/utils/validate';
-import { combineListApi, orderPinkListApi, statisticsApi } from '@/api/marketing';
+import { combineListApi, orderPinkListApi, statisticsApi, combineJoinApi } from '@/api/marketing';
 export default {
   name: 'combinalist',
   filters: {
@@ -236,6 +238,29 @@ export default {
         .catch((res) => {
           this.loading = false;
           this.$message.error(res.msg);
+        });
+    },
+    joinCombination(row) {
+      this.$confirm('确认成团？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          combineJoinApi(row.id)
+            .then((res) => {
+              this.$message.success(res.msg);
+              this.getList();
+            })
+            .catch((res) => {
+              this.$message.error(res.msg);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消',
+          });
         });
     },
     // 具体日期

@@ -62,6 +62,8 @@ export default {
     initEditor(val) {
       if (val) {
         this.editor.txt.html(this.content);
+      } else {
+        this.editor.txt.html('');
       }
     },
   },

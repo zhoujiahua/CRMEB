@@ -121,7 +121,7 @@
               :on-exceeded-size="handleMaxSize"
               class="mr20"
               style="margin-top: 1px"
-              accept="image/*"
+              accept="image/*,.mp3"
               :before-upload="beforeUpload"
             >
               <el-button type="primary">上传</el-button>
@@ -177,7 +177,7 @@ import { wechatQrcodeSaveApi, wechatQrcodeTree, wechatQrcodeDetail } from '@/api
 import Setting from '@/setting';
 import { getCookies } from '@/libs/util';
 import customerInfo from '@/components/customerInfo';
-import { isPicUpload } from '@/utils';
+import { isPicUpload, isVoiceUpload } from '@/utils';
 
 export default {
   name: 'createCode',
@@ -254,7 +254,12 @@ export default {
   },
   methods: {
     beforeUpload(file) {
-      return isPicUpload(file);
+      if (this.formData.type === 'image') {
+        return isPicUpload(file);
+      }
+      if (this.formData.type === 'voice') {
+        return isVoiceUpload(file);
+      }
     },
     activeData(dataLabel) {
       this.labelShow = false;
