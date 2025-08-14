@@ -548,6 +548,7 @@ class StoreOrderCreateServices extends BaseServices
                 $uni_integral_price = (string)bcdiv((string)$integral_price, (string)$cart['cart_num'], 4);
                 $cart['truePrice'] = $cart['truePrice'] > $uni_integral_price ? bcsub((string)$cart['truePrice'], $uni_integral_price, 2) : 0;
             }
+            if ($cart['sum_true_price'] < 0) $cart['sum_true_price'] = '0.00';
         }
         try {
             [$cartInfo, $spread_ids] = $this->computeOrderProductBrokerage($uid, $cartInfo);

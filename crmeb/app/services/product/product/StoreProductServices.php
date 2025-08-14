@@ -33,6 +33,7 @@ use app\services\system\SystemUserLevelServices;
 use app\services\user\UserLabelServices;
 use app\services\user\member\MemberCardServices;
 use app\services\user\UserLevelServices;
+use app\services\user\UserSearchServices;
 use app\services\user\UserServices;
 use crmeb\exceptions\AdminException;
 use app\jobs\ProductLogJob;
@@ -1188,6 +1189,10 @@ class StoreProductServices extends BaseServices
         $where['is_show'] = 1;
         $where['is_del'] = 0;
         $where['star'] = 1;
+        $ifKeyword = isset($where['store_name']) && $where['store_name'];
+        if ($ifKeyword) {
+            app()->make(UserSearchServices::class)->saveUserSearch($uid, $where['store_name'], [$where['store_name']], []);
+        }
         [$page, $limit] = $this->getPageValue();
         $where['vip_user'] = $uid ? app()->make(UserServices::class)->value(['uid' => $uid], 'is_money_level') : 0;
         $list = $this->dao->getSearchList($where, $page, $limit, ['id,store_name,cate_id,image,IFNULL(sales, 0) + IFNULL(ficti, 0) as sales,price,stock,activity,ot_price,spec_type,recommend_image,unit_name,is_vip,vip_price,is_virtual,presale,custom_form,virtual_type,min_qty,label_list']);

@@ -17,9 +17,8 @@
 									<text v-else>{{ $t(`无门槛券`) }}</text>
 								</view>
 							</view>
-							<view v-if="item.is_use == true" class="button" :style="[bntBgColor]">{{ $t(`已领取`) }}</view>
-							<view v-else-if="item.is_use == false" class="button" :style="[bntBgColor]" @click="receiveCoupon(item)">{{ $t(`去领取`) }}</view>
-							<view v-else-if="item.is_use == 2" class="button" :style="[bntBgColor]">{{ $t(`已过期`) }}</view>
+							<view v-if="item.is_use >= item.receive_limit" class="button" :style="[bntBgColor]">{{ $t(`已领取`) }}</view>
+							<view v-else class="button" :style="[bntBgColor]" @click="receiveCoupon(item)">{{ $t(`去领取`) }}</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -40,9 +39,8 @@
 									<text v-else>{{ $t(`无门槛券`) }}</text>
 								</view>
 							</view>
-							<view v-if="item.is_use == true" class="button" :style="[bntBgColor]">{{ $t(`已领取`) }}</view>
-							<view v-else-if="item.is_use == false" class="button" :style="[bntBgColor]" @click="receiveCoupon(item)">{{ $t(`去领取`) }}</view>
-							<view v-else-if="item.is_use == 2" class="button" :style="[bntBgColor]">{{ $t(`已过期`) }}</view>
+							<view v-if="item.is_use >= item.receive_limit" class="button" :style="[bntBgColor]">{{ $t(`已领取`) }}</view>
+							<view v-else class="button" :style="[bntBgColor]" @click="receiveCoupon(item)">{{ $t(`去领取`) }}</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -63,9 +61,8 @@
 										<text v-else>{{ $t(`无门槛券`) }}</text>
 									</view>
 								</view>
-								<view v-if="item.is_use == true" class="button acea-row row-middle">{{ $t(`已领取`) }}</view>
-								<view v-else-if="item.is_use == false" class="button acea-row row-middle" @click="receiveCoupon(item)">{{ $t(`立即领取`) }}</view>
-								<view v-else-if="item.is_use == 2" class="button acea-row row-middle">{{ $t(`已过期`) }}</view>
+								<view v-if="item.is_use >= item.receive_limit" class="button acea-row row-middle">{{ $t(`已领取`) }}</view>
+								<view v-else class="button acea-row row-middle" @click="receiveCoupon(item)">{{ $t(`立即领取`) }}</view>
 							</view>
 						</view>
 					</view>
@@ -74,7 +71,7 @@
 			<view v-else-if="dataConfig.styleConfig.tabVal == 3" class="coupon4" :style="[coupon4Color]">
 				<view class="content">
 					<scroll-view scroll-x="true">
-						<view class="list acea-row"> 
+						<view class="list acea-row">
 							<view v-for="item in couponList" :key="item.id" :style="[couponItemStyle]" class="item">
 								<view class="name" :style="typeStyle">
 									<view class="inner">{{ item.type | typeFilter }}</view>
@@ -115,9 +112,8 @@
 									<text v-else>{{ $t(`无门槛券`) }}</text>
 								</view>
 							</view>
-							<view v-if="item.is_use == true" class="button acea-row row-middle">{{ $t(`已领取`) }}</view>
-							<view v-else-if="item.is_use == false" class="button acea-row row-middle" @click="receiveCoupon(item)">{{ $t(`领取`) }}</view>
-							<view v-else-if="item.is_use == 2" class="button acea-row row-middle">{{ $t(`已过期`) }}</view>
+							<view v-if="item.is_use >= item.receive_limit" class="button acea-row row-middle">{{ $t(`已领取`) }}</view>
+							<view v-else class="button acea-row row-middle" @click="receiveCoupon(item)">{{ $t(`领取`) }}</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -157,7 +153,7 @@
 		},
 		filters:{
 			typeFilter(val){
-				let obj = { 
+				let obj = {
 					0: '通用券',
 					1: '品类券',
 					2: '商品券',

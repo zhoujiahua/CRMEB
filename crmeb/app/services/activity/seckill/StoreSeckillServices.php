@@ -117,11 +117,11 @@ class StoreSeckillServices extends BaseServices
             }
         }
         //限制编辑
-        if ($data['copy'] == 0 && $seckill) {
-            if ($seckill['stop_time'] + 86400 < time()) {
-                throw new AdminException(400508);
-            }
-        }
+//        if ($data['copy'] == 0 && $seckill) {
+//            if ($seckill['stop_time'] + 86400 < time()) {
+//                throw new AdminException(400508);
+//            }
+//        }
         if ($data['num'] < $data['once_num']) {
             throw new AdminException(400500);
         }
@@ -861,9 +861,9 @@ class StoreSeckillServices extends BaseServices
                         if (!isset($sattr['price']) || !$sattr['price']) {
                             throw new AdminException('请填写商品（' . $product['store_name'] . ' | ' . $sattr['suk'] . '）活动价');
                         }
-                        if ($sattr['price'] > $sattr['ot_price']) {
-                            throw new AdminException('商品（' . $product['store_name'] . ' | ' . $sattr['suk'] . '）活动价不能大于原价');
-                        }
+//                        if ($sattr['price'] > $sattr['ot_price']) {
+//                            throw new AdminException('商品（' . $product['store_name'] . ' | ' . $sattr['suk'] . '）活动价不能大于原价');
+//                        }
                         if (!isset($sattr['quota']) || !$sattr['quota']) {
                             throw new AdminException('请填写商品（' . $product['store_name'] . ' | ' . $sattr['suk'] . '）限量');
                         }
@@ -888,6 +888,7 @@ class StoreSeckillServices extends BaseServices
                     }
                 }
                 $seckillId = $this->dao->value(['activity_id' => $id, 'product_id' => $seckillData['product_id']], 'id') ?? 0;
+                $seckillData['description'] = app()->make(StoreDescriptionServices::class)->getDescription(['product_id' => $seckillData['product_id'], 'type' => 1]);
                 $this->saveData($seckillId, $seckillData);
             }
             return true;
