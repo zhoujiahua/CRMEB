@@ -1,55 +1,5 @@
 <template>
   <div>
-    <el-card :bordered="false" shadow="never" class="ivu-mt">
-      <div class="head acea-row row-between-wrapper">商业授权</div>
-      <el-table ref="table" :data="licensingTable" empty-text="暂无数据">
-        <el-table-column label="产品证书编号" minWidth="180">
-          <template slot-scope="scope">
-            <span v-if="scope.row.status === 1">{{ scope.row.authCode }}</span>
-            <span v-else>未授权</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" fixed="right" width="180">
-          <template slot-scope="scope">
-            <span class="btn cup" v-db-click @click="toCrmeb()">进入官网</span>
-            <span class="btn cup" v-show="scope.row.status != 1" v-db-click @click="payment('bz')">购买授权</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
-    <el-card v-if="!copyright && status == 1" :bordered="false" shadow="never" class="ivu-mt mt16">
-      <div class="head acea-row row-between-wrapper">去版权服务</div>
-      <el-table ref="table" :data="copyrightList" empty-text="暂无数据">
-        <el-table-column label="授权服务" minWidth="180">
-          <template slot-scope="scope"> 标准版 </template>
-        </el-table-column>
-        <el-table-column label="操作" fixed="right" width="180">
-          <template slot-scope="scope">
-            <span class="btn cup" v-db-click @click="payment('copyright')">立即购买</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
-    <el-card v-if="copyright" :bordered="false" shadow="never" class="ivu-mt mt16">
-      <div class="head acea-row row-between-wrapper">自定义版权信息</div>
-      <el-table ref="table" :data="copyrightTableData" empty-text="暂无数据">
-        <el-table-column label="文字版权信息" minWidth="180">
-          <template slot-scope="scope"> {{ scope.row.copyrightContext }} </template>
-        </el-table-column>
-        <el-table-column label="底部版权图片" minWidth="180">
-          <template slot-scope="scope">
-            <div class="tabBox_img" v-viewer v-show="scope.row.copyrightImage">
-              <img v-lazy="scope.row.copyrightImage" />
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" fixed="right" width="180">
-          <template slot-scope="scope">
-            <span class="btn cup" v-db-click @click="editCopyright()">编辑</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
     <el-card v-for="(value, key, index) in tableList" :key="index" :bordered="false" shadow="never" class="ivu-mt mt16">
       <div class="head acea-row row-between-wrapper">{{ key | headText }}</div>
       <el-table ref="table" :data="tableList[key]" empty-text="暂无数据">
